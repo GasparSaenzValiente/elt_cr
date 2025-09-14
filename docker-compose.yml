@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:latest 
+    container_name: cr_pg_dbcr_
+    environment:
+      POSTGRES_USER: cr_user
+      POSTGRES_PASSWORD: cr_pass
+      POSTGRES_DB: cr_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
