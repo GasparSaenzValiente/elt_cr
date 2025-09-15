@@ -1,25 +1,3 @@
-"""
-1. API Wrapper para Clash Royale (Python):
-    Detalle: Crea un archivo scripts/api_wrapper.py.
-        Define una clase ClashRoyaleAPI que tome tu API_KEY en el constructor.
-        Métodos:
-            _make_request(endpoint): Un método privado que maneje la lógica de la petición HTTP (headers, URL base, manejo de errores comunes).
-
-            get_player_info(player_tag): Recibe un tag y devuelve el JSON del jugador.
-
-            get_clan_info(clan_tag): Recibe un tag y devuelve el JSON del clan.
-
-            get_clan_members(clan_tag): Devuelve la lista de miembros de un clan.
-
-            get_player_battle_log(player_tag): Devuelve el registro de batallas de un jugador.
-
-            get_top_players(limit=200): Opcional, pero muy útil para expandir tu base de datos de jugadores.
-
-            Manejo de errores: Usa try-except para requests.exceptions.RequestException y para códigos de estado HTTP (resp.raise_for_status()). Devuelve None o levanta una excepción personalizada si la petición falla.
-
-    Hito: Archivo api_wrapper.py con las funciones básicas para interactuar con la API.
-"""
-
 import requests
 
 class ClashRoyaleAPI:
