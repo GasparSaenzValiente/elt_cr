@@ -21,7 +21,6 @@
 """
 
 import requests
-import os
 
 class ClashRoyaleAPI:
     BASE_URL = "https://api.clashroyale.com/v1"
@@ -75,5 +74,5 @@ class ClashRoyaleAPI:
         clean_tag = player_tag.lstrip('#').upper()
         return self._make_request(f"players/%23{clean_tag}/battlelog")
     
-    def get_top_players(self, leaderbord_id: int ,limit=200):
-        return self._make_request(f"leaderboard/{leaderbord_id}")
+    def get_top_players(self, leaderbord_id: int, limit:int=200):
+        return self._make_request(f"leaderboard/{leaderbord_id}?limit={limit}")
