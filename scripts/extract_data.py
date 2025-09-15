@@ -1,6 +1,7 @@
 import os
 import json
 import psycopg2
+import boto3
 from dotenv import load_dotenv
 from datetime import datetime
 from api_wrapper import ClashRoyaleAPI
@@ -16,49 +17,34 @@ if API_KEY is None:
 
 
 wrapper = ClashRoyaleAPI(api_key=API_KEY) 
+
+s3 = boto3.client(
+    "s3",
+    endpoint_url="http://localhost:9000", 
+    aws_access_key_id="admin",
+    aws_secret_access_key="password",
+    region_name="us-east-1"
+)
+bucket_name = "cr-raw-data"
 try:
-    conn = psycopg2.connect(
-        host="localhost",
-        dbname="cr_db",
-        user="cr_user",
-        password="cr_pass",
-        port=5432
-    )
+    s3.head_bucket(Bucket=bucket_name)
+except:
+    s3.create_bucket(Bucket=bucket_name)
 
-    cur = conn.cursor()
-
-    cur.execute("""
-        CREATE TABLE IF NOT EXISTS raw_players(
-        tag TEXT PRIMARY KEY, 
-        data JSONB, 
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    );
-    """)
-
-    cur.execute("""
-        CREATE TABLE IF NOT EXISTS raw_clans(
-        tag TEXT PRIMARY KEY,
-        data JSONB,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    );
-    """)
-    conn.commit()
-
+try:
     print("Saving players info...")
     for player_tag in PLAYER_TAGS_TO_TRACK:
         player_info = wrapper.get_player_info(player_tag=player_tag)
         if player_info:
                 now = datetime.now()
-                cur.execute("""
-                    INSERT INTO raw_players (tag, data, created_at, updated_at)
-                    VALUES (%s, %s, %s, %s)
-                    ON CONFLICT (tag) DO UPDATE SET
-                        data = EXCLUDED.data,
-                        updated_at = EXCLUDED.updated_at;
-                """, (player_tag, json.dumps(player_info), now, now))
-                conn.commit()
+                object_key:str = f"raw/players/year={now:%Y}/month={now:%m}/day={now:%d}/{player_tag}.json" 
+                s3.put_object(
+                    Bucket=bucket_name,
+                    Key=object_key,
+                    Body=json.dumps(player_info),
+                    ContentType="application/json"
+                )
+                print(f"Saved {player_tag} info")
         else:
             print(f"Could not get player info of player_tag: {player_tag}")
 
@@ -68,25 +54,16 @@ try:
         clan_info = wrapper.get_clan_info(clan_tag=clan_tag)
         if clan_info:
                 now = datetime.now()
-                cur.execute("""
-                    INSERT INTO raw_clans (tag, data, created_at, updated_at)
-                    VALUES (%s, %s, %s, %s)
-                    ON CONFLICT (tag) DO UPDATE SET
-                        data = EXCLUDED.data,
-                        updated_at = EXCLUDED.updated_at;
-                """, (clan_tag, json.dumps(clan_info), now, now))
-                conn.commit()
+                object_key:str = f"raw/clans/year={now:%Y}/month={now:%m}/day={now:%d}/{clan_tag}.json" 
+                s3.put_object(
+                    Bucket=bucket_name,
+                    Key=object_key,
+                    Body=json.dumps(clan_info),
+                    ContentType="application/json"
+                )
+                print(f"Saved {clan_tag} info")
         else:
             print(f"Could not get clan info of clan_tag: {clan_tag}")
 
-except psycopg2.Error as e:
-    print(f"Error de PostgreSQL: {e}")
-    if conn:
-        conn.rollback()
-except Exception as e:
-        print(f"Ocurrió un error inesperado: {e}")
-finally:
-        if cur:
-            cur.close()
-        if conn:
-            conn.close()
+except:
+     pass
