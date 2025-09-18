@@ -1,0 +1,25 @@
+{"timestamp":"2025-09-18T15:18:11.222633","level":"info","event":"DAG bundles loaded: dags-folder","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager"}
+{"timestamp":"2025-09-18T15:18:11.223084","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/cr_ingestion_dag.py","logger":"airflow.models.dagbag.DagBag"}
+{"timestamp":"2025-09-18T15:18:11.939031Z","level":"info","event":"Saving players info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:14.050173Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/players/%232PPCJ0UUP: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:14.051777Z","level":"info","event":"Could not get player info of player_tag: #2PPCJ0UUP","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:15.389485Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/players/%23VP9GJYQ2: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:15.390084Z","level":"info","event":"Could not get player info of player_tag: #VP9GJYQ2","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:16.813422Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/players/%23G9YV9GR8R: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:16.826349Z","level":"info","event":"Could not get player info of player_tag: #G9YV9GR8R","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:18.008146Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/players/%2322GPGCVCV: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:18.008674Z","level":"info","event":"Could not get player info of player_tag: #22GPGCVCV","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:19.380976Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/players/%23C0RL8CVCR: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:19.382499Z","level":"info","event":"Could not get player info of player_tag: #C0RL8CVCR","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:21.091828Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/players/%232L8JG2GRJ: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:21.092511Z","level":"info","event":"Could not get player info of player_tag: #2L8JG2GRJ","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:21.092577Z","level":"info","event":"Saving clans info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:22.705767Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/clans/%232L80YUL: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:22.723854Z","level":"info","event":"Could not get clan info of clan_tag: #2L80YUL","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:23.957890Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/clans/%23QCV8JQVR: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:23.958579Z","level":"info","event":"Could not get clan info of clan_tag: #QCV8JQVR","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:25.246727Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/clans/%232L8PCVP0: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:25.247753Z","level":"info","event":"Could not get clan info of clan_tag: #2L8PCVP0","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:26.558722Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/clans/%23Q0U2PLGU: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:26.559685Z","level":"info","event":"Could not get clan info of clan_tag: #Q0U2PLGU","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:26.560318","level":"info","event":"Done. Returned value was: None","logger":"airflow.task.operators.airflow.providers.standard.operators.python.PythonOperator"}

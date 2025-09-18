@@ -1,0 +1,310 @@
+{"timestamp":"2025-09-18T00:00:01.398702","level":"info","event":"DAG bundles loaded: dags-folder","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager"}
+{"timestamp":"2025-09-18T00:00:01.398933","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/cr_ingestion_dag.py","logger":"airflow.models.dagbag.DagBag"}
+{"timestamp":"2025-09-18T00:00:01.519206Z","level":"info","event":"Saving players info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T00:00:02.791162Z","level":"info","event":"Saved #2PPCJ0UUP info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T00:00:04.314993Z","level":"info","event":"Saved #VP9GJYQ2 info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T00:00:05.852371Z","level":"info","event":"Saved #G9YV9GR8R info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T00:00:07.072286Z","level":"info","event":"Saved #22GPGCVCV info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T00:00:08.514487Z","level":"info","event":"Saved #C0RL8CVCR info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T00:00:09.843947Z","level":"info","event":"Saved #2L8JG2GRJ info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T00:00:09.844035Z","level":"info","event":"Saving clans info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T00:00:10.991527Z","level":"info","event":"Saved #2L80YUL info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T00:00:12.300683Z","level":"info","event":"Saved #QCV8JQVR info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T00:00:13.530523Z","level":"info","event":"Saved #2L8PCVP0 info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T00:00:14.758869Z","level":"info","event":"Saved #Q0U2PLGU info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T00:00:14.759102","level":"info","event":"Done. Returned value was: None","logger":"airflow.task.operators.airflow.providers.standard.operators.python.PythonOperator"}
+{"timestamp":"2025-09-18T15:18:11.307210","level":"info","event":"DAG bundles loaded: dags-folder","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager"}
+{"timestamp":"2025-09-18T15:18:11.307499","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/cr_ingestion_dag.py","logger":"airflow.models.dagbag.DagBag"}
+{"timestamp":"2025-09-18T15:18:11.720721Z","level":"info","event":"Saving players info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:14.050289Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/players/%232PPCJ0UUP: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:14.051831Z","level":"info","event":"Could not get player info of player_tag: #2PPCJ0UUP","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:15.389680Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/players/%23VP9GJYQ2: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:15.390309Z","level":"info","event":"Could not get player info of player_tag: #VP9GJYQ2","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:16.813456Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/players/%23G9YV9GR8R: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:16.826673Z","level":"info","event":"Could not get player info of player_tag: #G9YV9GR8R","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:18.002873Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/players/%2322GPGCVCV: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:18.003397Z","level":"info","event":"Could not get player info of player_tag: #22GPGCVCV","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:19.380803Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/players/%23C0RL8CVCR: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:19.382316Z","level":"info","event":"Could not get player info of player_tag: #C0RL8CVCR","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:21.091697Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/players/%232L8JG2GRJ: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:21.092624Z","level":"info","event":"Could not get player info of player_tag: #2L8JG2GRJ","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:21.092709Z","level":"info","event":"Saving clans info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:22.705777Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/clans/%232L80YUL: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:22.724418Z","level":"info","event":"Could not get clan info of clan_tag: #2L80YUL","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:23.970789Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/clans/%23QCV8JQVR: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:23.971257Z","level":"info","event":"Could not get clan info of clan_tag: #QCV8JQVR","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:25.453959Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/clans/%232L8PCVP0: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:25.454787Z","level":"info","event":"Could not get clan info of clan_tag: #2L8PCVP0","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:26.818653Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/clans/%23Q0U2PLGU: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:26.819625Z","level":"info","event":"Could not get clan info of clan_tag: #Q0U2PLGU","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:18:26.820114","level":"info","event":"Done. Returned value was: None","logger":"airflow.task.operators.airflow.providers.standard.operators.python.PythonOperator"}
+{"timestamp":"2025-09-18T15:27:43.353675","level":"info","event":"DAG bundles loaded: dags-folder","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager"}
+{"timestamp":"2025-09-18T15:27:43.353991","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/cr_ingestion_dag.py","logger":"airflow.models.dagbag.DagBag"}
+{"timestamp":"2025-09-18T15:27:43.728446Z","level":"info","event":"Saving players info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:27:46.094197Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/players/%232PPCJ0UUP: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:27:46.095273Z","level":"info","event":"Could not get player info of player_tag: #2PPCJ0UUP","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:27:47.687093Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/players/%23VP9GJYQ2: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:27:47.687845Z","level":"info","event":"Could not get player info of player_tag: #VP9GJYQ2","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:27:49.011956Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/players/%23G9YV9GR8R: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:27:49.020680Z","level":"info","event":"Could not get player info of player_tag: #G9YV9GR8R","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:27:50.530249Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/players/%2322GPGCVCV: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:27:50.531191Z","level":"info","event":"Could not get player info of player_tag: #22GPGCVCV","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:27:51.881643Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/players/%23C0RL8CVCR: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:27:51.882475Z","level":"info","event":"Could not get player info of player_tag: #C0RL8CVCR","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:27:53.491087Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/players/%232L8JG2GRJ: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:27:53.492079Z","level":"info","event":"Could not get player info of player_tag: #2L8JG2GRJ","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:27:53.492176Z","level":"info","event":"Saving clans info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:27:54.883759Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/clans/%232L80YUL: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:27:54.900755Z","level":"info","event":"Could not get clan info of clan_tag: #2L80YUL","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:27:56.408812Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/clans/%23QCV8JQVR: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:27:56.409826Z","level":"info","event":"Could not get clan info of clan_tag: #QCV8JQVR","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:27:58.206831Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/clans/%232L8PCVP0: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:27:58.207677Z","level":"info","event":"Could not get clan info of clan_tag: #2L8PCVP0","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:27:59.529768Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/clans/%23Q0U2PLGU: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:27:59.530366Z","level":"info","event":"Could not get clan info of clan_tag: #Q0U2PLGU","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:27:59.531006","level":"info","event":"Done. Returned value was: None","logger":"airflow.task.operators.airflow.providers.standard.operators.python.PythonOperator"}
+{"timestamp":"2025-09-18T15:39:19.042466","level":"info","event":"DAG bundles loaded: dags-folder","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager"}
+{"timestamp":"2025-09-18T15:39:19.042766","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/cr_ingestion_dag.py","logger":"airflow.models.dagbag.DagBag"}
+{"timestamp":"2025-09-18T15:39:19.481698Z","level":"info","event":"Saving players info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:39:20.969254Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/players/%232PPCJ0UUP: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:39:20.970058Z","level":"info","event":"Could not get player info of player_tag: #2PPCJ0UUP","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:39:22.521087Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/players/%23VP9GJYQ2: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:39:22.521645Z","level":"info","event":"Could not get player info of player_tag: #VP9GJYQ2","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:39:24.139623Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/players/%23G9YV9GR8R: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:39:24.153102Z","level":"info","event":"Could not get player info of player_tag: #G9YV9GR8R","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:39:25.283697Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/players/%2322GPGCVCV: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:39:25.284406Z","level":"info","event":"Could not get player info of player_tag: #22GPGCVCV","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:39:26.688390Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/players/%23C0RL8CVCR: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:39:26.689050Z","level":"info","event":"Could not get player info of player_tag: #C0RL8CVCR","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:39:28.128611Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/players/%232L8JG2GRJ: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:39:28.129470Z","level":"info","event":"Could not get player info of player_tag: #2L8JG2GRJ","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:39:28.129521Z","level":"info","event":"Saving clans info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:39:29.407906Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/clans/%232L80YUL: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:39:29.426212Z","level":"info","event":"Could not get clan info of clan_tag: #2L80YUL","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:39:31.240801Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/clans/%23QCV8JQVR: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:39:31.241700Z","level":"info","event":"Could not get clan info of clan_tag: #QCV8JQVR","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:39:32.957136Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/clans/%232L8PCVP0: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:39:32.958268Z","level":"info","event":"Could not get clan info of clan_tag: #2L8PCVP0","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:39:34.164522Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/clans/%23Q0U2PLGU: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:39:34.165462Z","level":"info","event":"Could not get clan info of clan_tag: #Q0U2PLGU","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:39:34.166028","level":"info","event":"Done. Returned value was: None","logger":"airflow.task.operators.airflow.providers.standard.operators.python.PythonOperator"}
+{"timestamp":"2025-09-18T15:47:26.629941","level":"info","event":"DAG bundles loaded: dags-folder","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager"}
+{"timestamp":"2025-09-18T15:47:26.630277","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/cr_ingestion_dag.py","logger":"airflow.models.dagbag.DagBag"}
+{"timestamp":"2025-09-18T15:47:27.204005Z","level":"info","event":"Saving players info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:47:28.556637Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/players/%232PPCJ0UUP: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:47:28.557468Z","level":"info","event":"Could not get player info of player_tag: #2PPCJ0UUP","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:47:29.925152Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/players/%23VP9GJYQ2: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:47:29.926164Z","level":"info","event":"Could not get player info of player_tag: #VP9GJYQ2","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:47:31.355562Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/players/%23G9YV9GR8R: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:47:31.356702Z","level":"info","event":"Could not get player info of player_tag: #G9YV9GR8R","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:47:32.725389Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/players/%2322GPGCVCV: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:47:32.742254Z","level":"info","event":"Could not get player info of player_tag: #22GPGCVCV","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:47:34.084905Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/players/%23C0RL8CVCR: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:47:34.086195Z","level":"info","event":"Could not get player info of player_tag: #C0RL8CVCR","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:47:35.617713Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/players/%232L8JG2GRJ: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:47:35.618960Z","level":"info","event":"Could not get player info of player_tag: #2L8JG2GRJ","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:47:35.619052Z","level":"info","event":"Saving clans info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:47:36.969394Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/clans/%232L80YUL: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:47:36.970261Z","level":"info","event":"Could not get clan info of clan_tag: #2L80YUL","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:47:38.640357Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/clans/%23QCV8JQVR: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:47:39.394117Z","level":"info","event":"Could not get clan info of clan_tag: #QCV8JQVR","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:47:40.919366Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/clans/%232L8PCVP0: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:47:40.920067Z","level":"info","event":"Could not get clan info of clan_tag: #2L8PCVP0","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:47:42.273376Z","level":"info","event":"HTTP Error for https://api.clashroyale.com/v1/clans/%23Q0U2PLGU: 403 - {\"reason\":\"accessDenied\",\"message\":\"Invalid authorization\"}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:47:42.274273Z","level":"info","event":"Could not get clan info of clan_tag: #Q0U2PLGU","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T15:47:42.274954","level":"info","event":"Done. Returned value was: None","logger":"airflow.task.operators.airflow.providers.standard.operators.python.PythonOperator"}
+{"timestamp":"2025-09-18T21:12:58.661257","level":"info","event":"DAG bundles loaded: dags-folder","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager"}
+{"timestamp":"2025-09-18T21:12:58.661529","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/cr_ingestion_dag.py","logger":"airflow.models.dagbag.DagBag"}
+{"timestamp":"2025-09-18T21:12:59.147603Z","level":"info","event":"Saving players info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:13:00.407385Z","level":"info","event":"Saved #2PPCJ0UUP info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:13:01.938680Z","level":"info","event":"Saved #VP9GJYQ2 info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:13:03.444774Z","level":"info","event":"Saved #G9YV9GR8R info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:13:04.683107Z","level":"info","event":"Saved #22GPGCVCV info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:13:05.936751Z","level":"info","event":"Saved #C0RL8CVCR info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:13:07.297875Z","level":"info","event":"Saved #2L8JG2GRJ info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:13:07.298025Z","level":"info","event":"Saving clans info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:13:08.770126Z","level":"info","event":"Saved #2L80YUL info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:13:09.996686Z","level":"info","event":"Saved #QCV8JQVR info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:13:11.261319Z","level":"info","event":"Saved #2L8PCVP0 info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:13:12.377017Z","level":"info","event":"Saved #Q0U2PLGU info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:13:12.377894","level":"info","event":"Done. Returned value was: None","logger":"airflow.task.operators.airflow.providers.standard.operators.python.PythonOperator"}
+{"timestamp":"2025-09-18T21:19:00.594449","level":"info","event":"DAG bundles loaded: dags-folder","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager"}
+{"timestamp":"2025-09-18T21:19:00.594762","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/cr_ingestion_dag.py","logger":"airflow.models.dagbag.DagBag"}
+{"timestamp":"2025-09-18T21:19:01.295055Z","level":"info","event":"Saving players info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:19:02.592140Z","level":"info","event":"Saved #2PPCJ0UUP info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:19:04.148613Z","level":"info","event":"Saved #VP9GJYQ2 info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:19:05.574171Z","level":"info","event":"Saved #G9YV9GR8R info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:19:06.670266Z","level":"info","event":"Saved #22GPGCVCV info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:19:07.840471Z","level":"info","event":"Saved #C0RL8CVCR info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:19:09.055138Z","level":"info","event":"Saved #2L8JG2GRJ info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:19:09.055228Z","level":"info","event":"Saving clans info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:19:10.276606Z","level":"info","event":"Saved #2L80YUL info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:19:11.375257Z","level":"info","event":"Saved #QCV8JQVR info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:19:12.599053Z","level":"info","event":"Saved #2L8PCVP0 info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:19:13.985143Z","level":"info","event":"Saved #Q0U2PLGU info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:19:13.985949","level":"info","event":"Done. Returned value was: None","logger":"airflow.task.operators.airflow.providers.standard.operators.python.PythonOperator"}
+{"timestamp":"2025-09-18T21:22:36.267290","level":"info","event":"DAG bundles loaded: dags-folder","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager"}
+{"timestamp":"2025-09-18T21:22:36.267576","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/cr_ingestion_dag.py","logger":"airflow.models.dagbag.DagBag"}
+{"timestamp":"2025-09-18T21:22:36.666521Z","level":"info","event":"Saving players info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:22:38.054359Z","level":"info","event":"Saved #2PPCJ0UUP info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:22:39.485915Z","level":"info","event":"Saved #VP9GJYQ2 info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:22:40.993025Z","level":"info","event":"Saved #G9YV9GR8R info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:22:42.223289Z","level":"info","event":"Saved #22GPGCVCV info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:22:43.365413Z","level":"info","event":"Saved #C0RL8CVCR info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:22:44.525665Z","level":"info","event":"Saved #2L8JG2GRJ info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:22:44.525905Z","level":"info","event":"Saving clans info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:22:45.609694Z","level":"info","event":"Saved #2L80YUL info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:22:46.828176Z","level":"info","event":"Saved #QCV8JQVR info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:22:48.073107Z","level":"info","event":"Saved #2L8PCVP0 info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:22:49.439310Z","level":"info","event":"Saved #Q0U2PLGU info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:22:49.440208","level":"info","event":"Done. Returned value was: None","logger":"airflow.task.operators.airflow.providers.standard.operators.python.PythonOperator"}
+{"timestamp":"2025-09-18T21:53:07.343486","level":"info","event":"DAG bundles loaded: dags-folder","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager"}
+{"timestamp":"2025-09-18T21:53:07.343841","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/cr_ingestion_dag.py","logger":"airflow.models.dagbag.DagBag"}
+{"timestamp":"2025-09-18T21:53:08.101906Z","level":"info","event":"Saving players info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:53:09.347804Z","level":"info","event":"Saved #2PPCJ0UUP info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:53:10.902024Z","level":"info","event":"Saved #VP9GJYQ2 info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:53:12.412132Z","level":"info","event":"Saved #G9YV9GR8R info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:53:13.643884Z","level":"info","event":"Saved #22GPGCVCV info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:53:14.873431Z","level":"info","event":"Saved #C0RL8CVCR info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:53:16.134990Z","level":"info","event":"Saved #2L8JG2GRJ info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:53:16.135079Z","level":"info","event":"Saving clans info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:53:17.592931Z","level":"info","event":"Saved #2L80YUL info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:53:19.214318Z","level":"info","event":"Saved #QCV8JQVR info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:53:20.499808Z","level":"info","event":"Saved #2L8PCVP0 info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:53:21.750466Z","level":"info","event":"Saved #Q0U2PLGU info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:53:21.751216","level":"info","event":"Done. Returned value was: None","logger":"airflow.task.operators.airflow.providers.standard.operators.python.PythonOperator"}
+{"timestamp":"2025-09-18T21:55:42.989553","level":"info","event":"DAG bundles loaded: dags-folder","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager"}
+{"timestamp":"2025-09-18T21:55:42.989881","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/cr_ingestion_dag.py","logger":"airflow.models.dagbag.DagBag"}
+{"timestamp":"2025-09-18T21:55:43.670833Z","level":"info","event":"Saving players info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:55:44.890227Z","level":"info","event":"Saved #2PPCJ0UUP info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:55:46.681212Z","level":"info","event":"Saved #VP9GJYQ2 info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:55:48.502029Z","level":"info","event":"Saved #G9YV9GR8R info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:55:49.700547Z","level":"info","event":"Saved #22GPGCVCV info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:55:50.923072Z","level":"info","event":"Saved #C0RL8CVCR info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:55:52.160998Z","level":"info","event":"Saved #2L8JG2GRJ info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:55:52.161137Z","level":"info","event":"Saving clans info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:55:53.384972Z","level":"info","event":"Saved #2L80YUL info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:55:54.615782Z","level":"info","event":"Saved #QCV8JQVR info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:55:55.844180Z","level":"info","event":"Saved #2L8PCVP0 info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:55:57.074231Z","level":"info","event":"Saved #Q0U2PLGU info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:55:57.074789","level":"info","event":"Done. Returned value was: None","logger":"airflow.task.operators.airflow.providers.standard.operators.python.PythonOperator"}
+{"timestamp":"2025-09-18T21:57:57.932559","level":"info","event":"DAG bundles loaded: dags-folder","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager"}
+{"timestamp":"2025-09-18T21:57:57.932859","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/cr_ingestion_dag.py","logger":"airflow.models.dagbag.DagBag"}
+{"timestamp":"2025-09-18T21:57:58.575827Z","level":"info","event":"Saving players info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:57:59.854347Z","level":"info","event":"Saved #2PPCJ0UUP info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:58:01.379338Z","level":"info","event":"Saved #VP9GJYQ2 info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:58:02.820703Z","level":"info","event":"Saved #G9YV9GR8R info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:58:04.050107Z","level":"info","event":"Saved #22GPGCVCV info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:58:05.279489Z","level":"info","event":"Saved #C0RL8CVCR info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:58:06.666640Z","level":"info","event":"Saved #2L8JG2GRJ info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:58:06.666766Z","level":"info","event":"Saving clans info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:58:08.256288Z","level":"info","event":"Saved #2L80YUL info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:58:09.476552Z","level":"info","event":"Saved #QCV8JQVR info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:58:10.697946Z","level":"info","event":"Saved #2L8PCVP0 info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:58:11.834514Z","level":"info","event":"Saved #Q0U2PLGU info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T21:58:11.835105","level":"info","event":"Done. Returned value was: None","logger":"airflow.task.operators.airflow.providers.standard.operators.python.PythonOperator"}
+{"timestamp":"2025-09-18T22:02:23.196632","level":"info","event":"DAG bundles loaded: dags-folder","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager"}
+{"timestamp":"2025-09-18T22:02:23.197105","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/cr_ingestion_dag.py","logger":"airflow.models.dagbag.DagBag"}
+{"timestamp":"2025-09-18T22:02:23.647849Z","level":"info","event":"Saving players info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:02:24.905760Z","level":"info","event":"Saved #2PPCJ0UUP info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:02:26.420414Z","level":"info","event":"Saved #VP9GJYQ2 info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:02:27.935135Z","level":"info","event":"Saved #G9YV9GR8R info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:02:29.206217Z","level":"info","event":"Saved #22GPGCVCV info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:02:30.393087Z","level":"info","event":"Saved #C0RL8CVCR info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:02:31.627755Z","level":"info","event":"Saved #2L8JG2GRJ info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:02:31.627881Z","level":"info","event":"Saving clans info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:02:33.003546Z","level":"info","event":"Saved #2L80YUL info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:02:34.200955Z","level":"info","event":"Saved #QCV8JQVR info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:02:35.413307Z","level":"info","event":"Saved #2L8PCVP0 info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:02:36.537281Z","level":"info","event":"Saved #Q0U2PLGU info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:02:36.537859","level":"info","event":"Done. Returned value was: None","logger":"airflow.task.operators.airflow.providers.standard.operators.python.PythonOperator"}
+{"timestamp":"2025-09-18T22:27:41.686970","level":"info","event":"DAG bundles loaded: dags-folder","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager"}
+{"timestamp":"2025-09-18T22:27:41.687245","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/cr_ingestion_dag.py","logger":"airflow.models.dagbag.DagBag"}
+{"timestamp":"2025-09-18T22:27:42.198329Z","level":"info","event":"Saving players info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:27:43.428050Z","level":"info","event":"Saved #2PPCJ0UUP info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:27:44.939186Z","level":"info","event":"Saved #VP9GJYQ2 info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:27:46.452574Z","level":"info","event":"Saved #G9YV9GR8R info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:27:47.969498Z","level":"info","event":"Saved #22GPGCVCV info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:27:49.242218Z","level":"info","event":"Saved #C0RL8CVCR info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:27:50.445571Z","level":"info","event":"Saved #2L8JG2GRJ info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:27:50.445658Z","level":"info","event":"Saving clans info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:27:51.708867Z","level":"info","event":"Saved #2L80YUL info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:27:52.917713Z","level":"info","event":"Saved #QCV8JQVR info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:27:54.027224Z","level":"info","event":"Saved #2L8PCVP0 info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:27:55.289584Z","level":"info","event":"Saved #Q0U2PLGU info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:27:55.290124","level":"info","event":"Done. Returned value was: None","logger":"airflow.task.operators.airflow.providers.standard.operators.python.PythonOperator"}
+{"timestamp":"2025-09-18T22:31:14.933192","level":"info","event":"DAG bundles loaded: dags-folder","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager"}
+{"timestamp":"2025-09-18T22:31:14.933475","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/cr_ingestion_dag.py","logger":"airflow.models.dagbag.DagBag"}
+{"timestamp":"2025-09-18T22:31:15.539091Z","level":"info","event":"Saving players info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:31:16.677623Z","level":"info","event":"Saved #2PPCJ0UUP info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:31:18.221352Z","level":"info","event":"Saved #VP9GJYQ2 info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:31:19.755886Z","level":"info","event":"Saved #G9YV9GR8R info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:31:20.986452Z","level":"info","event":"Saved #22GPGCVCV info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:31:22.216013Z","level":"info","event":"Saved #C0RL8CVCR info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:31:23.444662Z","level":"info","event":"Saved #2L8JG2GRJ info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:31:23.444798Z","level":"info","event":"Saving clans info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:31:24.891902Z","level":"info","event":"Saved #2L80YUL info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:31:26.236948Z","level":"info","event":"Saved #QCV8JQVR info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:31:27.464753Z","level":"info","event":"Saved #2L8PCVP0 info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:31:28.600352Z","level":"info","event":"Saved #Q0U2PLGU info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:31:28.601006","level":"info","event":"Done. Returned value was: None","logger":"airflow.task.operators.airflow.providers.standard.operators.python.PythonOperator"}
+{"timestamp":"2025-09-18T22:44:54.711043","level":"info","event":"DAG bundles loaded: dags-folder","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager"}
+{"timestamp":"2025-09-18T22:44:54.711364","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/cr_ingestion_dag.py","logger":"airflow.models.dagbag.DagBag"}
+{"timestamp":"2025-09-18T22:44:55.115798Z","level":"info","event":"Saving players info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:44:56.327050Z","level":"info","event":"Saved #2PPCJ0UUP info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:44:57.852131Z","level":"info","event":"Saved #VP9GJYQ2 info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:44:59.387599Z","level":"info","event":"Saved #G9YV9GR8R info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:45:00.830935Z","level":"info","event":"Saved #22GPGCVCV info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:45:02.306058Z","level":"info","event":"Saved #C0RL8CVCR info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:45:03.476184Z","level":"info","event":"Saved #2L8JG2GRJ info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:45:03.476566Z","level":"info","event":"Saving clans info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:45:04.695912Z","level":"info","event":"Saved #2L80YUL info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:45:05.801192Z","level":"info","event":"Saved #QCV8JQVR info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:45:07.052054Z","level":"info","event":"Saved #2L8PCVP0 info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:45:08.281676Z","level":"info","event":"Saved #Q0U2PLGU info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:45:08.282176","level":"info","event":"Done. Returned value was: None","logger":"airflow.task.operators.airflow.providers.standard.operators.python.PythonOperator"}
+{"timestamp":"2025-09-18T22:48:05.265372","level":"info","event":"DAG bundles loaded: dags-folder","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager"}
+{"timestamp":"2025-09-18T22:48:05.265695","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/cr_ingestion_dag.py","logger":"airflow.models.dagbag.DagBag"}
+{"timestamp":"2025-09-18T22:48:05.919842Z","level":"info","event":"Saving players info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:48:07.189450Z","level":"info","event":"Saved #2PPCJ0UUP info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:48:08.719760Z","level":"info","event":"Saved #VP9GJYQ2 info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:48:10.576191Z","level":"info","event":"Saved #G9YV9GR8R info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:48:12.024575Z","level":"info","event":"Saved #22GPGCVCV info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:48:13.226426Z","level":"info","event":"Saved #C0RL8CVCR info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:48:14.455142Z","level":"info","event":"Saved #2L8JG2GRJ info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:48:14.455280Z","level":"info","event":"Saving clans info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:48:15.675909Z","level":"info","event":"Saved #2L80YUL info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:48:16.907115Z","level":"info","event":"Saved #QCV8JQVR info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:48:18.130798Z","level":"info","event":"Saved #2L8PCVP0 info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:48:19.359962Z","level":"info","event":"Saved #Q0U2PLGU info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:48:19.360644","level":"info","event":"Done. Returned value was: None","logger":"airflow.task.operators.airflow.providers.standard.operators.python.PythonOperator"}
+{"timestamp":"2025-09-18T22:53:31.978854","level":"info","event":"DAG bundles loaded: dags-folder","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager"}
+{"timestamp":"2025-09-18T22:53:31.979161","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/cr_ingestion_dag.py","logger":"airflow.models.dagbag.DagBag"}
+{"timestamp":"2025-09-18T22:53:32.620593Z","level":"info","event":"Saving players info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:53:33.843056Z","level":"info","event":"Saved #2PPCJ0UUP info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:53:35.373103Z","level":"info","event":"Saved #VP9GJYQ2 info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:53:36.845392Z","level":"info","event":"Saved #G9YV9GR8R info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:53:38.033941Z","level":"info","event":"Saved #22GPGCVCV info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:53:40.092445Z","level":"info","event":"Saved #C0RL8CVCR info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:53:41.641755Z","level":"info","event":"Saved #2L8JG2GRJ info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:53:41.642106Z","level":"info","event":"Saving clans info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:53:43.270699Z","level":"info","event":"Saved #2L80YUL info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:53:44.690902Z","level":"info","event":"Saved #QCV8JQVR info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:53:45.913265Z","level":"info","event":"Saved #2L8PCVP0 info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:53:47.077408Z","level":"info","event":"Saved #Q0U2PLGU info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:53:47.078272","level":"info","event":"Done. Returned value was: None","logger":"airflow.task.operators.airflow.providers.standard.operators.python.PythonOperator"}
+{"timestamp":"2025-09-18T22:59:16.213571","level":"info","event":"DAG bundles loaded: dags-folder","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager"}
+{"timestamp":"2025-09-18T22:59:16.213870","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/cr_ingestion_dag.py","logger":"airflow.models.dagbag.DagBag"}
+{"timestamp":"2025-09-18T22:59:16.515684Z","level":"info","event":"Saving players info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:59:17.715559Z","level":"info","event":"Saved #2PPCJ0UUP info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:59:19.262894Z","level":"info","event":"Saved #VP9GJYQ2 info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:59:20.768581Z","level":"info","event":"Saved #G9YV9GR8R info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:59:21.994503Z","level":"info","event":"Saved #22GPGCVCV info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:59:23.224268Z","level":"info","event":"Saved #C0RL8CVCR info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:59:24.461437Z","level":"info","event":"Saved #2L8JG2GRJ info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:59:24.461740Z","level":"info","event":"Saving clans info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:59:25.688597Z","level":"info","event":"Saved #2L80YUL info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:59:26.913510Z","level":"info","event":"Saved #QCV8JQVR info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:59:33.971803Z","level":"info","event":"Saved #2L8PCVP0 info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:59:35.222992Z","level":"info","event":"Saved #Q0U2PLGU info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:59:35.223515","level":"info","event":"Done. Returned value was: None","logger":"airflow.task.operators.airflow.providers.standard.operators.python.PythonOperator"}

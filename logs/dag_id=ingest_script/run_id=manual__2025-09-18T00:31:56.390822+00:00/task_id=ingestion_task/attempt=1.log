@@ -1,0 +1,15 @@
+{"timestamp":"2025-09-18T00:31:56.808141","level":"info","event":"DAG bundles loaded: dags-folder","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager"}
+{"timestamp":"2025-09-18T00:31:56.808441","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/cr_ingestion_dag.py","logger":"airflow.models.dagbag.DagBag"}
+{"timestamp":"2025-09-18T00:31:56.913279Z","level":"info","event":"Saving players info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T00:31:58.179810Z","level":"info","event":"Saved #2PPCJ0UUP info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T00:31:59.709840Z","level":"info","event":"Saved #VP9GJYQ2 info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T00:32:01.247499Z","level":"info","event":"Saved #G9YV9GR8R info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T00:32:02.646665Z","level":"info","event":"Saved #22GPGCVCV info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T00:32:04.333204Z","level":"info","event":"Saved #C0RL8CVCR info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T00:32:05.767359Z","level":"info","event":"Saved #2L8JG2GRJ info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T00:32:05.767437Z","level":"info","event":"Saving clans info...","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T00:32:07.109620Z","level":"info","event":"Saved #2L80YUL info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T00:32:08.521293Z","level":"info","event":"Saved #QCV8JQVR info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T00:32:10.054344Z","level":"info","event":"Saved #2L8PCVP0 info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T00:32:11.588058Z","level":"info","event":"Saved #Q0U2PLGU info","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T00:32:11.588428","level":"info","event":"Done. Returned value was: None","logger":"airflow.task.operators.airflow.providers.standard.operators.python.PythonOperator"}

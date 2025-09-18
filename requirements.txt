@@ -2,3 +2,5 @@ python-dotenv
 requests
 psycopg2-binary 
 minio
+pyspark==3.5.1
+boto3

@@ -1,0 +1,15 @@
+{"timestamp":"2025-09-18T22:02:37.221731","level":"info","event":"DAG bundles loaded: dags-folder","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager"}
+{"timestamp":"2025-09-18T22:02:37.222167","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/cr_ingestion_dag.py","logger":"airflow.models.dagbag.DagBag"}
+{"timestamp":"2025-09-18T22:02:38.602506Z","level":"error","event":"25/09/18 22:02:38 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable","chan":"stderr","logger":"task"}
+{"timestamp":"2025-09-18T22:02:38.771805Z","level":"error","event":"Setting default log level to \"WARN\".","chan":"stderr","logger":"task"}
+{"timestamp":"2025-09-18T22:02:38.771980Z","level":"error","event":"To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).","chan":"stderr","logger":"task"}
+{"timestamp":"2025-09-18T22:02:39.465706Z","level":"error","event":"25/09/18 22:02:39 WARN Utils: Service 'SparkUI' could not bind on port 4040. Attempting port 4041.","chan":"stderr","logger":"task"}
+{"timestamp":"2025-09-18T22:02:40.945685Z","level":"error","event":"25/09/18 22:02:40 WARN MetricsConfig: Cannot locate configuration: tried hadoop-metrics2-s3a-file-system.properties,hadoop-metrics2.properties","chan":"stderr","logger":"task"}
+{"timestamp":"2025-09-18T22:02:44.301170Z","level":"info","event":"+----------+------------+--------------------+","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:02:44.301365Z","level":"info","event":"|      name|bestTrophies|         currentDeck|","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:02:44.301476Z","level":"info","event":"+----------+------------+--------------------+","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:02:44.301561Z","level":"info","event":"|RΣΔLΠΩҒΔҜΣ|        9878|[{0, 3, 1, {https...|","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:02:44.301654Z","level":"info","event":"+----------+------------+--------------------+","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:02:44.301728Z","level":"info","event":"","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:02:45.180989Z","level":"info","event":"Transformación completada ✅","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:02:45.181135","level":"info","event":"Done. Returned value was: None","logger":"airflow.task.operators.airflow.providers.standard.operators.python.PythonOperator"}

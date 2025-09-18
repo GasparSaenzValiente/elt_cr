@@ -1,0 +1,21 @@
+{"timestamp":"2025-09-18T22:31:28.948262","level":"info","event":"DAG bundles loaded: dags-folder","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager"}
+{"timestamp":"2025-09-18T22:31:28.948558","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/cr_ingestion_dag.py","logger":"airflow.models.dagbag.DagBag"}
+{"timestamp":"2025-09-18T22:31:29.766160Z","level":"error","event":"25/09/18 22:31:29 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable","chan":"stderr","logger":"task"}
+{"timestamp":"2025-09-18T22:31:29.878934Z","level":"error","event":"Setting default log level to \"WARN\".","chan":"stderr","logger":"task"}
+{"timestamp":"2025-09-18T22:31:29.879150Z","level":"error","event":"To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).","chan":"stderr","logger":"task"}
+{"timestamp":"2025-09-18T22:31:30.342455Z","level":"error","event":"25/09/18 22:31:30 WARN Utils: Service 'SparkUI' could not bind on port 4040. Attempting port 4041.","chan":"stderr","logger":"task"}
+{"timestamp":"2025-09-18T22:31:31.392649Z","level":"error","event":"25/09/18 22:31:31 WARN MetricsConfig: Cannot locate configuration: tried hadoop-metrics2-s3a-file-system.properties,hadoop-metrics2.properties","chan":"stderr","logger":"task"}
+{"timestamp":"2025-09-18T22:31:34.454663Z","level":"info","event":"+----------+----------+--------+------------+--------------------+--------------------+","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:31:34.454858Z","level":"info","event":"|       tag|      name|expLevel|bestTrophies|         currentDeck|                clan|","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:31:34.454955Z","level":"info","event":"+----------+----------+--------+------------+--------------------+--------------------+","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:31:34.455032Z","level":"info","event":"|#2PPCJ0UUP|RΣΔLΠΩҒΔҜΣ|      46|        9878|[{0, 3, 1, {https...|{16000013, cordob...|","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:31:34.455103Z","level":"info","event":"+----------+----------+--------+------------+--------------------+--------------------+","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:31:34.455172Z","level":"info","event":"","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:31:34.639543Z","level":"info","event":"+----------+----------+---------+-------------+--------------------+--------------------+","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:31:34.639770Z","level":"info","event":"|       tag|      name|exp_level|best_trophies|        current_deck|                clan|","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:31:34.639886Z","level":"info","event":"+----------+----------+---------+-------------+--------------------+--------------------+","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:31:34.639987Z","level":"info","event":"|#2PPCJ0UUP|RΣΔLΠΩҒΔҜΣ|       46|         9878|[{0, 3, 1, {https...|{16000013, cordob...|","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:31:34.640085Z","level":"info","event":"+----------+----------+---------+-------------+--------------------+--------------------+","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:31:34.640179Z","level":"info","event":"","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:31:34.640272Z","level":"info","event":"Transformación completada ✅","chan":"stdout","logger":"task"}
+{"timestamp":"2025-09-18T22:31:34.639688","level":"info","event":"Done. Returned value was: None","logger":"airflow.task.operators.airflow.providers.standard.operators.python.PythonOperator"}
