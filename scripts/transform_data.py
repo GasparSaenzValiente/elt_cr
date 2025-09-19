@@ -1,5 +1,6 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.types import *
+from pyspark.sql.functions import col, explode
 
 def transform():
     spark = SparkSession.builder \
@@ -67,6 +68,26 @@ def transform():
     
     for oldname, newname in rename_clans_dict.items():
         df_clans = df_clans.withColumnRenamed(oldname, newname)
+
+    # me quedo solo con el clan tag 
+    df_players = df_players.withColumn("clan_tag", col("clan")["tag"]).drop("clan") 
+    
+    # hago otro df para el deck, luego sera otra tabla en la db
+    df_player_cards = df_players \
+        .withColumn("card", explode("current_deck")) \
+        .select(
+            col("tag").alias("player_tag"),
+            col("card.id").alias("card_id"),
+            col("card.name").alias("card_name"),
+            col("card.level").alias("card_level"),
+            col("card.rarity").alias("card_rarity"),
+            col("card.elixirCost").alias("card_elixir_cost"),
+            col("card.evolutionLevel").alias("card.evolution_level")
+        )
+    
+    df_players = df_players.drop("current_deck")
+    df_player_cards.show(truncate=False)
+
 
     df_players.show()
     df_clans.show()
