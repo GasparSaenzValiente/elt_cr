@@ -86,8 +86,26 @@ def transform():
         )
     
     df_players = df_players.drop("current_deck")
+    
+    
+    # clans
+    df_clans = df_clans.withColumn("location_id", col("location")["id"]) \
+                .withColumn("location_name", col("location")["name"]) \
+                .drop("location")
+    
+    df_clan_members = df_clans.withColumn("member", explode(col("member_list"))) \
+                .select(
+                    col("tag").alias("clan_tag"),
+                    col("member.tag").alias("member_tag"),
+                    col("member.name").alias("member_name"),
+                    col("member.role").alias("member_role"),
+                    col("member.clanRank").alias("member_clan_rank"),
+                    col("member.expLevel").alias("member_exp_level"),
+                    col("member.donations").alias("member_donations"),
+                    col("member.donationsReceived").alias("donations_received")
+                )
+
+    df_clan_members.show(truncate=False)
     df_player_cards.show(truncate=False)
-
-
     df_players.show()
     df_clans.show()
