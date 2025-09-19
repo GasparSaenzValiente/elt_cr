@@ -1,4 +1,5 @@
 from pyspark.sql import SparkSession
+from pyspark.sql.types import *
 
 def transform():
     spark = SparkSession.builder \
@@ -19,18 +20,39 @@ def transform():
     hadoop_conf.set("fs.s3a.path.style.access", "true")
     hadoop_conf.set("fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
 
-    
-    df_players = spark.read.json("s3a://cr-raw-data/raw/players/*/*/*/")
-    df_clans   = spark.read.json("s3a://cr-raw-data/raw/clans/*/*/*/")
+    # schemas 
+    player_schema = StructType([
+        StructField("tag", StringType(), True),
+        StructField("name", StringType(), True),
+        StructField("expLevel", IntegerType(), True),
+        StructField("bestTrophies", IntegerType(), True),
+        StructField("currentDeck", ArrayType(MapType(StringType(), StringType())), True),
+        StructField("currentDeckSupportCards", ArrayType(MapType(StringType(), StringType())), True),
+        StructField("currentFavouriteCard", MapType(StringType(), StringType()), True),
+        StructField("clan", MapType(StringType(), StringType()), True)
+    ])
 
-    df_players_transformed = df_players.select("tag", "name", "expLevel", "bestTrophies", "currentDeck", "clan")
-    df_clans_transformed = df_clans.select("tag", "name", "clanScore", "clanWarTrophies", "requiredTrophies", "members", "memberList")
+    clan_schema = StructType([
+        StructField("tag", StringType(), True),
+        StructField("name", StringType(), True),
+        StructField("type", StringType(), True),
+        StructField("location", MapType(StringType(), StringType())),
+        StructField("clanScore", IntegerType(), True),
+        StructField("clanWarTrophies", IntegerType(), True),
+        StructField("requiredTrophies", IntegerType(), True),
+        StructField("members", IntegerType(), True),
+        StructField("memberList", ArrayType(MapType(StringType(), StringType())), True)
+    ])
 
-    
+    df_players = spark.read.schema(player_schema).json("s3a://cr-raw-data/raw/players/*/*/*/")
+    df_clans   = spark.read.schema(clan_schema).json("s3a://cr-raw-data/raw/clans/*/*/*/")
+
     rename_players_dict = {
         "expLevel": "exp_level",
         "bestTrophies": "best_trophies",
-        "currentDeck": "current_deck"
+        "currentDeck": "current_deck",
+        "currentDeckSupportCards": "current_deck_support_cards",
+        "currentFavouriteCard": "current_favourite_card"
     }
 
     rename_clans_dict = {
@@ -41,10 +63,10 @@ def transform():
     }
 
     for oldname, newname in rename_players_dict.items():
-        df_players_transformed = df_players_transformed.withColumnRenamed(oldname, newname)
+        df_players = df_players.withColumnRenamed(oldname, newname)
     
     for oldname, newname in rename_clans_dict.items():
-        df_clans_transformed = df_clans_transformed.withColumnRenamed(oldname, newname)
+        df_clans = df_clans.withColumnRenamed(oldname, newname)
 
-    df_players_transformed.show()
-    df_clans_transformed.show()
+    df_players.show()
+    df_clans.show()
