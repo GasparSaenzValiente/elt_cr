@@ -1,6 +1,7 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.types import *
-from pyspark.sql.functions import col, explode
+from pyspark.sql import functions as F
+from datetime import datetime
 
 def transform():
     spark = SparkSession.builder \
@@ -70,42 +71,81 @@ def transform():
         df_clans = df_clans.withColumnRenamed(oldname, newname)
 
     # me quedo solo con el clan tag 
-    df_players = df_players.withColumn("clan_tag", col("clan")["tag"]).drop("clan") 
+    df_players = df_players.withColumn("clan_tag", F.col("clan")["tag"]).drop("clan") 
     
     # hago otro df para el deck, luego sera otra tabla en la db
     df_player_cards = df_players \
-        .withColumn("card", explode("current_deck")) \
+        .withColumn("card", F.explode("current_deck")) \
         .select(
-            col("tag").alias("player_tag"),
-            col("card.id").alias("card_id"),
-            col("card.name").alias("card_name"),
-            col("card.level").alias("card_level"),
-            col("card.rarity").alias("card_rarity"),
-            col("card.elixirCost").alias("card_elixir_cost"),
-            col("card.evolutionLevel").alias("card.evolution_level")
+            F.col("tag").alias("player_tag"),
+            F.col("card.id").alias("card_id"),
+            F.col("card.name").alias("card_name"),
+            F.col("card.level").alias("card_level"),
+            F.col("card.rarity").alias("card_rarity"),
+            F.col("card.elixirCost").alias("card_elixir_cost"),
+            F.col("card.evolutionLevel").alias("card.evolution_level")
         )
     
     df_players = df_players.drop("current_deck")
     
     
     # clans
-    df_clans = df_clans.withColumn("location_id", col("location")["id"]) \
-                .withColumn("location_name", col("location")["name"]) \
+    df_clans = df_clans.withColumn("location_id", F.col("location")["id"]) \
+                .withColumn("location_name", F.col("location")["name"]) \
                 .drop("location")
     
-    df_clan_members = df_clans.withColumn("member", explode(col("member_list"))) \
+    df_clan_members = df_clans.withColumn("member", F.explode(F.col("member_list"))) \
                 .select(
-                    col("tag").alias("clan_tag"),
-                    col("member.tag").alias("member_tag"),
-                    col("member.name").alias("member_name"),
-                    col("member.role").alias("member_role"),
-                    col("member.clanRank").alias("member_clan_rank"),
-                    col("member.expLevel").alias("member_exp_level"),
-                    col("member.donations").alias("member_donations"),
-                    col("member.donationsReceived").alias("donations_received")
+                    F.col("tag").alias("clan_tag"),
+                    F.col("member.tag").alias("member_tag"),
+                    F.col("member.name").alias("member_name"),
+                    F.col("member.role").alias("member_role"),
+                    F.col("member.clanRank").alias("member_clan_rank"),
+                    F.col("member.expLevel").alias("member_exp_level"),
+                    F.col("member.donations").alias("member_donations"),
+                    F.col("member.donationsReceived").alias("donations_received")
                 )
 
-    df_clan_members.show(truncate=False)
-    df_player_cards.show(truncate=False)
-    df_players.show()
-    df_clans.show()
+    # df_clan_members.show(truncate=False)
+    # df_player_cards.show(truncate=False)
+    # df_players.show()
+    # df_clans.show()
+    today = datetime.today()
+    year, month, day = today.year, today.month, today.day
+
+
+
+    df_players = df_players.withColumn("year", F.lit(year)) \
+                        .withColumn("month", F.lit(month)) \
+                        .withColumn("day", F.lit(day))
+
+    df_clans = df_clans.withColumn("year", F.lit(year)) \
+                    .withColumn("month", F.lit(month)) \
+                    .withColumn("day", F.lit(day))
+
+    df_clan_members = df_clan_members.withColumn("year", F.lit(year)) \
+                                    .withColumn("month", F.lit(month)) \
+                                    .withColumn("day", F.lit(day))
+
+    df_player_cards = df_player_cards.withColumn("year", F.lit(year)) \
+                                    .withColumn("month", F.lit(month)) \
+                                    .withColumn("day", F.lit(day))
+
+    BUCKET_DIR = "s3a://cr-raw-data"
+
+    df_players.write.mode("overwrite") \
+    .partitionBy("year", "month", "day") \
+    .parquet(f"{BUCKET_DIR}/processed/players/")
+
+    df_clans.write.mode("overwrite") \
+        .partitionBy("year", "month", "day") \
+        .parquet(f"{BUCKET_DIR}/processed/clans/")
+
+    df_clan_members.write.mode("overwrite") \
+        .partitionBy("year", "month", "day") \
+        .parquet(f"{BUCKET_DIR}/processed/clan_members/")
+
+    df_player_cards.write.mode("overwrite") \
+        .partitionBy("year", "month", "day") \
+        .parquet(f"{BUCKET_DIR}/processed/player_cards/")
+
