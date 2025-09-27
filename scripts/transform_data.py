@@ -3,16 +3,19 @@ from pyspark.sql.types import *
 from pyspark.sql import functions as F
 from datetime import datetime
 
+
 def transform():
     spark = SparkSession.builder \
     .appName("TransformTask") \
     .config(
         "spark.jars",
         "/opt/spark/jars/hadoop-aws-3.3.4.jar,"
-        "/opt/spark/jars/aws-java-sdk-bundle-1.12.446.jar"
+        "/opt/spark/jars/aws-java-sdk-bundle-1.12.446.jar,"
+        "/opt/spark/jars/postgresql-42.7.8.jar"
     ) \
     .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem") \
     .config("spark.hadoop.fs.s3a.aws.credentials.provider", "org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider") \
+    .config("spark.driver.extraClassPath", "/opt/spark/jars/postgresql-42.7.8.jar") \
     .getOrCreate()
 
     hadoop_conf = spark._jsc.hadoopConfiguration()
@@ -70,46 +73,65 @@ def transform():
     for oldname, newname in rename_clans_dict.items():
         df_clans = df_clans.withColumnRenamed(oldname, newname)
 
-    # me quedo solo con el clan tag 
+    # PLAYER CLANTAG
     df_players = df_players.withColumn("clan_tag", F.col("clan")["tag"]).drop("clan") 
-    
-    # hago otro df para el deck, luego sera otra tabla en la db
+
+    # PLAYER CARDS
     df_player_cards = df_players \
         .withColumn("card", F.explode("current_deck")) \
         .select(
             F.col("tag").alias("player_tag"),
-            F.col("card.id").alias("card_id"),
+            F.col("card.id").alias("card_id").cast(LongType()),
             F.col("card.name").alias("card_name"),
-            F.col("card.level").alias("card_level"),
+            F.col("card.level").alias("card_level").cast(IntegerType()),
             F.col("card.rarity").alias("card_rarity"),
-            F.col("card.elixirCost").alias("card_elixir_cost"),
-            F.col("card.evolutionLevel").alias("card.evolution_level")
+            F.col("card.elixirCost").alias("card_elixir_cost").cast(IntegerType()),
+            F.col("card.evolutionLevel").alias("card_evolution_level").cast(IntegerType())
         )
-    
     df_players = df_players.drop("current_deck")
     
-    
-    # clans
+
+    # SUPPORT CARD
+    df_support_card = df_players \
+        .withColumn("support_card", F.explode("current_deck_support_cards")) \
+        .select(
+            F.col("tag").alias("player_tag"),
+            F.col("support_card.name").alias("spp_name"),
+            F.col("support_card.id").alias("spp_id").cast(LongType()),
+            F.col("support_card.level").alias("spp_level").cast(IntegerType())
+        )
+    df_players = df_players.drop("current_deck_support_cards")
+
+
+    # FAV CARD
+    df_players = df_players \
+    .withColumn("fav_card_name", F.col("current_favourite_card")["name"]) \
+    .withColumn("fav_card_elixir", F.col("current_favourite_card")["elixirCost"].cast(IntegerType())) \
+    .withColumn("fav_card_rarity", F.col("current_favourite_card")["rarity"])
+    df_players = df_players.drop("current_favourite_card") 
+
+
+    # CLANS INFO
     df_clans = df_clans.withColumn("location_id", F.col("location")["id"]) \
                 .withColumn("location_name", F.col("location")["name"]) \
                 .drop("location")
     
+    # CLANS MEMBERS
     df_clan_members = df_clans.withColumn("member", F.explode(F.col("member_list"))) \
                 .select(
                     F.col("tag").alias("clan_tag"),
                     F.col("member.tag").alias("member_tag"),
                     F.col("member.name").alias("member_name"),
                     F.col("member.role").alias("member_role"),
-                    F.col("member.clanRank").alias("member_clan_rank"),
-                    F.col("member.expLevel").alias("member_exp_level"),
-                    F.col("member.donations").alias("member_donations"),
-                    F.col("member.donationsReceived").alias("donations_received")
+                    F.col("member.clanRank").alias("member_clan_rank").cast(IntegerType()),
+                    F.col("member.expLevel").alias("member_exp_level").cast(IntegerType()),
+                    F.col("member.donations").alias("member_donations").cast(IntegerType()),
+                    F.col("member.donationsReceived").alias("donations_received").cast(IntegerType())
                 )
+    df_clans = df_clans.drop("member_list")
 
-    # df_clan_members.show(truncate=False)
-    # df_player_cards.show(truncate=False)
-    # df_players.show()
-    # df_clans.show()
+
+    # ADDING DATETIME
     today = datetime.today()
     year, month, day = today.year, today.month, today.day
 
@@ -131,21 +153,30 @@ def transform():
                                     .withColumn("month", F.lit(month)) \
                                     .withColumn("day", F.lit(day))
 
-    BUCKET_DIR = "s3a://cr-raw-data"
+    df_support_card = df_support_card.withColumn("year", F.lit(year)) \
+                                    .withColumn("month", F.lit(month)) \
+                                    .withColumn("day", F.lit(day))
+    
+
+    DB_URL = "jdbc:postgresql://db:5432/cr_db"
+
+    DB_PROPERTIES = {
+        "user": "cr_user",
+        "password": "cr_pass",
+        "driver": "org.postgresql.Driver"
+    }
 
     df_players.write.mode("overwrite") \
-    .partitionBy("year", "month", "day") \
-    .parquet(f"{BUCKET_DIR}/processed/players/")
+    .jdbc(url=DB_URL, table='stg_players', properties=DB_PROPERTIES)
 
     df_clans.write.mode("overwrite") \
-        .partitionBy("year", "month", "day") \
-        .parquet(f"{BUCKET_DIR}/processed/clans/")
+        .jdbc(url=DB_URL, table='stg_clans', properties=DB_PROPERTIES)
 
     df_clan_members.write.mode("overwrite") \
-        .partitionBy("year", "month", "day") \
-        .parquet(f"{BUCKET_DIR}/processed/clan_members/")
+        .jdbc(url=DB_URL, table='stg_members', properties=DB_PROPERTIES)
 
     df_player_cards.write.mode("overwrite") \
-        .partitionBy("year", "month", "day") \
-        .parquet(f"{BUCKET_DIR}/processed/player_cards/")
-
+        .jdbc(url=DB_URL, table='stg_cards', properties=DB_PROPERTIES)
+    
+    df_support_card.write.mode("overwrite") \
+        .jdbc(url=DB_URL, table='stg_support_card', properties=DB_PROPERTIES)

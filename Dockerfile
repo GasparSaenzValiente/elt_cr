@@ -7,8 +7,8 @@ RUN apt-get update && \
 
 RUN mkdir -p /opt/spark/jars && \
     curl -L -o /opt/spark/jars/hadoop-aws-3.3.4.jar https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/3.3.4/hadoop-aws-3.3.4.jar && \
-    curl -L -o /opt/spark/jars/aws-java-sdk-bundle-1.12.446.jar https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/1.12.446/aws-java-sdk-bundle-1.12.446.jar
-
+    curl -L -o /opt/spark/jars/aws-java-sdk-bundle-1.12.446.jar https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/1.12.446/aws-java-sdk-bundle-1.12.446.jar && \
+    curl -L -o /opt/spark/jars/postgresql-42.7.8.jar https://repo1.maven.org/maven2/org/postgresql/postgresql/42.7.8/postgresql-42.7.8.jar
 
 ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 ENV PATH="$JAVA_HOME/bin:$PATH"
