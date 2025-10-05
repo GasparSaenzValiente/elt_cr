@@ -56,13 +56,39 @@ def transform():
     ])
 
     battle_log_schema = StructType([
+        StructField("battleTime", StringType(), True),
+        StructField("gameMode", StructType([
+            StructField("id", IntegerType()),
+            StructField("name", StringType())
+        ])),
+        StructField("isLadderTournament", BooleanType(), True),
+        StructField("isHostedMatch", BooleanType(), True),
+
         StructField("team", ArrayType(
             StructType([
                 StructField("tag", StringType()),
                 StructField("cards", ArrayType(
                     StructType([
                         StructField("id", IntegerType()),
-                        StructField("name", IntegerType()),
+                        StructField("name", StringType()),
+                        StructField("level", IntegerType()),
+                    ])
+                )),
+                StructField("elixirLeaked", IntegerType()),
+                StructField("kingTowerHitPoints", IntegerType()),
+                StructField("trophyChange", IntegerType()),
+                StructField("crowns", IntegerType()),
+                StructField("princessTowersHitPoints", ArrayType(IntegerType()))
+            ])
+        )),
+
+        StructField("opponent", ArrayType(
+            StructType([
+                StructField("tag", StringType()),
+                StructField("cards", ArrayType(
+                    StructType([
+                        StructField("id", IntegerType()),
+                        StructField("name", StringType()),
                         StructField("level", IntegerType()),
                     ])
                 )),
@@ -188,25 +214,67 @@ def transform():
 
     # BATTLE LOG LOGIC
 
+    # creo un id para identificar la partida ya que la api no me da
+    df_player_battle_log = df_player_battle_log.withColumn(
+        "battle_id",
+        F.sha2(
+            F.concat_ws(
+                "_",
+                F.col("battleTime"),
+                F.least(F.col("team")[0]["tag"], F.col("opponent")[0]["tag"]),
+                F.greatest(F.col("team")[0]["tag"], F.col("opponent")[0]["tag"])
+            ),
+            256
+            )
+        )
 
+    df_battle_info = df_player_battle_log.select(
+        "battle_id",
+        F.col("battleTime").alias("battle_time"),
+        F.col("gameMode.id").alias("game_mode_id"),
+        F.col("gameMode.name").alias("game_mode_name"),
+        "isLadderTournament",
+        "isHostedMatch",
+        F.col("team")[0]["tag"].alias("player_tag"),
+        F.col("team")[0]["elixirLeaked"].alias("player_elixir_leaked"),
+        F.col("team")[0]["kingTowerHitPoints"].alias("player_king_tower_hit_points"),
+        F.col("team")[0]["princessTowersHitPoints"].alias("player_princess_tower_hit_points"),
+        F.col("team")[0]["trophyChange"].alias("player_trophy_change"),
+        F.col("team")[0]["crowns"].alias("player_crowns"),
 
+        F.col("opponent")[0]["tag"].alias("opp_tag"),
+        F.col("opponent")[0]["elixirLeaked"].alias("opp_elixirLeaked"),
+        F.col("opponent")[0]["kingTowerHitPoints"].alias("opp_king_tower_hit_points"),
+        F.col("opponent")[0]["princessTowersHitPoints"].alias("opp_princess_tower_hit_points"),
+        F.col("opponent")[0]["trophyChange"].alias("opp_trophyChange"),
+        F.col("opponent")[0]["crowns"].alias("opp_crowns"),
+    )
 
+    df_player_cards_battle_log = (
+        df_player_battle_log
+        .withColumn("team_player", F.explode("team"))
+        .withColumn("team_card", F.explode("team_player.cards"))
+        .select(
+            "battle_id",
+            F.col("team_player.tag").alias("player_tag"),
+            F.col("team_card.id").alias("card_id"),
+            F.col("team_card.name").alias("card_name"),
+            F.col("team_card.level").alias("card_level")
+        )
+    )
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    df_opp_cards_battle_log = (
+        df_player_battle_log
+        .withColumn("opponent_player", F.explode("opponent"))
+        .withColumn("opponent_card", F.explode("opponent_player.cards"))
+        .select(
+            "battle_id",
+            F.col("opponent_player.tag").alias("opp_tag"),
+            F.col("opponent_card.id").alias("card_id"),
+            F.col("opponent_card.name").alias("card_name"),
+            F.col("opponent_card.level").alias("card_level")
+        )
+    )
 
     DB_URL = "jdbc:postgresql://db:5432/cr_db"
 
@@ -230,3 +298,12 @@ def transform():
     
     df_support_card.write.mode("overwrite") \
         .jdbc(url=DB_URL, table='stg_support_card', properties=DB_PROPERTIES)
+
+    df_battle_info.write.mode("overwrite") \
+        .jdbc(url=DB_URL, table='stg_batlle_info', properties=DB_PROPERTIES)
+    
+    df_player_cards_battle_log.write.mode("overwrite") \
+        .jdbc(url=DB_URL, table='stg_player_cards_battle_log', properties=DB_PROPERTIES)
+
+    df_opp_cards_battle_log.write.mode("overwrite") \
+        .jdbc(url=DB_URL, table='stg_opp_cards_battle_log', properties=DB_PROPERTIES)
