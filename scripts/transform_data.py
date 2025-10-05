@@ -30,7 +30,13 @@ def transform():
         StructField("tag", StringType(), True),
         StructField("name", StringType(), True),
         StructField("expLevel", IntegerType(), True),
+        StructField("trophies", IntegerType(), True),
         StructField("bestTrophies", IntegerType(), True),
+        StructField("wins", IntegerType(), True),
+        StructField("losses", IntegerType(), True),
+        StructField("battleCount", IntegerType(), True),
+        StructField("threeCrownWins", IntegerType(), True),
+        StructField("warDayWins", IntegerType(), True),
         StructField("currentDeck", ArrayType(MapType(StringType(), StringType())), True),
         StructField("currentDeckSupportCards", ArrayType(MapType(StringType(), StringType())), True),
         StructField("currentFavouriteCard", MapType(StringType(), StringType()), True),
@@ -49,8 +55,30 @@ def transform():
         StructField("memberList", ArrayType(MapType(StringType(), StringType())), True)
     ])
 
-    df_players = spark.read.schema(player_schema).json("s3a://cr-raw-data/raw/players/*/*/*/")
+    battle_log_schema = StructType([
+        StructField("team", ArrayType(
+            StructType([
+                StructField("tag", StringType()),
+                StructField("cards", ArrayType(
+                    StructType([
+                        StructField("id", IntegerType()),
+                        StructField("name", IntegerType()),
+                        StructField("level", IntegerType()),
+                    ])
+                )),
+                StructField("elixirLeaked", IntegerType()),
+                StructField("kingTowerHitPoints", IntegerType()),
+                StructField("trophyChange", IntegerType()),
+                StructField("crowns", IntegerType()),
+                StructField("princessTowersHitPoints", ArrayType(IntegerType()))
+            ])
+        ))
+    ])
+
+    df_players = spark.read.schema(player_schema).json("s3a://cr-raw-data/raw/players/players_info/*/*/*/")
     df_clans   = spark.read.schema(clan_schema).json("s3a://cr-raw-data/raw/clans/*/*/*/")
+    df_player_battle_log = spark.read.schema(battle_log_schema).json("s3a://cr-raw-data/raw/players/battle_log/*/*/*/")
+    
 
     rename_players_dict = {
         "expLevel": "exp_level",
@@ -157,6 +185,28 @@ def transform():
                                     .withColumn("month", F.lit(month)) \
                                     .withColumn("day", F.lit(day))
     
+
+    # BATTLE LOG LOGIC
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     DB_URL = "jdbc:postgresql://db:5432/cr_db"
 

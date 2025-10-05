@@ -42,11 +42,11 @@ def ingest_script():
 
     try:
         print("Saving players info...")
+        now = datetime.now()
         for player_tag in PLAYER_TAGS_TO_TRACK:
             player_info = wrapper.get_player_info(player_tag=player_tag)
             if player_info:
-                    now = datetime.now()
-                    object_key:str = f"raw/players/year={now:%Y}/month={now:%m}/day={now:%d}/{player_tag}.json" 
+                    object_key:str = f"raw/players/players_info/year={now:%Y}/month={now:%m}/day={now:%d}/{player_tag}.json" 
                     s3.put_object(
                         Bucket=bucket_name,
                         Key=object_key,
@@ -56,13 +56,25 @@ def ingest_script():
                     print(f"Saved {player_tag} info")
             else:
                 print(f"Could not get player info of player_tag: {player_tag}")
-
+            
+            player_battle_log = wrapper.get_player_battle_log(player_tag=player_tag)
+            if player_battle_log:
+                    object_key:str = f"raw/players/battle_log/year={now:%Y}/month={now:%m}/day={now:%d}/{player_tag}.json" 
+                    s3.put_object(
+                        Bucket=bucket_name,
+                        Key=object_key,
+                        Body=json.dumps(player_battle_log),
+                        ContentType="application/json"
+                    )
+                    print(f"Saved {player_tag} battle log info")         
+            else:
+                print(f"Could not get player battle log info of player_tag: {player_tag}")
+                 
 
         print("Saving clans info...")
         for clan_tag in CLANG_TAGS_TO_TRACK:
             clan_info = wrapper.get_clan_info(clan_tag=clan_tag)
             if clan_info:
-                    now = datetime.now()
                     object_key:str = f"raw/clans/year={now:%Y}/month={now:%m}/day={now:%d}/{clan_tag}.json" 
                     s3.put_object(
                         Bucket=bucket_name,
