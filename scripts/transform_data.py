@@ -111,7 +111,10 @@ def transform():
         "bestTrophies": "best_trophies",
         "currentDeck": "current_deck",
         "currentDeckSupportCards": "current_deck_support_cards",
-        "currentFavouriteCard": "current_favourite_card"
+        "currentFavouriteCard": "current_favourite_card",
+        "battleCount": "battle_count",
+        "threeCrownWins": "three_crown_wins",
+        "warDayWins": "war_day_wins"
     }
 
     rename_clans_dict = {
@@ -285,25 +288,25 @@ def transform():
     }
 
     df_players.write.mode("overwrite") \
-    .jdbc(url=DB_URL, table='stg_players', properties=DB_PROPERTIES)
+    .jdbc(url=DB_URL, table='landing_players', properties=DB_PROPERTIES)
 
     df_clans.write.mode("overwrite") \
-        .jdbc(url=DB_URL, table='stg_clans', properties=DB_PROPERTIES)
+        .jdbc(url=DB_URL, table='landing_clans', properties=DB_PROPERTIES)
 
     df_clan_members.write.mode("overwrite") \
-        .jdbc(url=DB_URL, table='stg_members', properties=DB_PROPERTIES)
+        .jdbc(url=DB_URL, table='landing_members', properties=DB_PROPERTIES)
 
     df_player_cards.write.mode("overwrite") \
-        .jdbc(url=DB_URL, table='stg_cards', properties=DB_PROPERTIES)
+        .jdbc(url=DB_URL, table='landing_cards', properties=DB_PROPERTIES)
     
     df_support_card.write.mode("overwrite") \
-        .jdbc(url=DB_URL, table='stg_support_card', properties=DB_PROPERTIES)
+        .jdbc(url=DB_URL, table='landing_support_card', properties=DB_PROPERTIES)
 
     df_battle_info.write.mode("overwrite") \
-        .jdbc(url=DB_URL, table='stg_batlle_info', properties=DB_PROPERTIES)
+        .jdbc(url=DB_URL, table='landing_batlle_info', properties=DB_PROPERTIES)
     
     df_player_cards_battle_log.write.mode("overwrite") \
-        .jdbc(url=DB_URL, table='stg_player_cards_battle_log', properties=DB_PROPERTIES)
+        .jdbc(url=DB_URL, table='landing_player_cards_battle_log', properties=DB_PROPERTIES)
 
     df_opp_cards_battle_log.write.mode("overwrite") \
-        .jdbc(url=DB_URL, table='stg_opp_cards_battle_log', properties=DB_PROPERTIES)
+        .jdbc(url=DB_URL, table='landing_opp_cards_battle_log', properties=DB_PROPERTIES)

@@ -1,0 +1,15 @@
+version: 2
+
+sources:
+  - name: cr_db_staging
+    database: cr_db
+    schema: public
+    tables: 
+    - name: stg_batlle_info
+    - name: stg_cards
+    - name: stg_clans
+    - name: stg_members
+    - name: stg_opp_cards_batlle_log
+    - name: stg_player_cards_batlle_log
+    - name: stg_players
+    - name: stg_support_card
