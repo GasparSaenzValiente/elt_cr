@@ -54,3 +54,7 @@ class ClashRoyaleAPI:
     
     def get_top_players(self, leaderbord_id: int, limit:int=200):
         return self._make_request(f"leaderboard/{leaderbord_id}?limit={limit}")
+    
+    def get_cards(self):
+        """Get all game cards"""
+        return self._make_request("cards")

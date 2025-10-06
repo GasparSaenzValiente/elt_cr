@@ -86,6 +86,20 @@ def ingest_script():
             else:
                 print(f"Could not get clan info of clan_tag: {clan_tag}")
 
+        print("Saving cards info...")
+        cards_info = wrapper.get_cards()
+        if cards_info:
+                    object_key:str = f"raw/latest_cards.json" 
+                    s3.put_object(
+                        Bucket=bucket_name,
+                        Key=object_key,
+                        Body=json.dumps(cards_info),
+                        ContentType="application/json"
+                    )
+                    print(f"Saved {cards_info} info")
+        else:
+            print(f"Could not get clan info of clan_tag: {cards_info}")        
+
     except Exception as e:
         print(e)
         pass

@@ -101,10 +101,55 @@ def transform():
         ))
     ])
 
+    cards_schema = StructType([
+        StructField("items", ArrayType(
+            StructType([
+                StructField("id", IntegerType()),
+                StructField("name", StringType()),
+                StructField("rarity", StringType()),
+                StructField("maxLevel", IntegerType()),
+                StructField("elixirCost", IntegerType()),
+                StructField("maxEvolutionLevel", IntegerType()),
+            ]),
+        )),
+        StructField("supportItems", ArrayType(
+            StructType([
+                StructField("id", IntegerType()),
+                StructField("name", StringType()),
+                StructField("rarity", StringType()),
+                StructField("maxLevel", IntegerType()),
+                StructField("elixirCost", IntegerType()),
+                StructField("maxEvolutionLevel", IntegerType()),
+            ]),
+        ))
+    ])
+
     df_players = spark.read.schema(player_schema).json("s3a://cr-raw-data/raw/players/players_info/*/*/*/")
     df_clans   = spark.read.schema(clan_schema).json("s3a://cr-raw-data/raw/clans/*/*/*/")
     df_player_battle_log = spark.read.schema(battle_log_schema).json("s3a://cr-raw-data/raw/players/battle_log/*/*/*/")
+    df_all_cards = spark.read.schema(cards_schema).json("s3a://cr-raw-data/raw/latest_cards.json")
     
+
+
+    df_cards = df_all_cards.withColumn("card", F.explode(F.col("items"))) \
+        .select(
+            F.col("card.id").alias("card_id"),
+            F.col("card.name").alias("card_name"),
+            F.col("card.rarity").alias("rarity"),
+            F.col("card.maxLevel").alias("max_level"),
+            F.col("card.elixirCost").alias("elixir_cost"),
+            F.col("card.maxEvolutionLevel").alias("max_evolution_level")
+        )
+
+    df_support_cards = df_all_cards.withColumn("supp_card", F.explode(F.col("supportItems"))) \
+        .select(
+            F.col("supp_card.id").alias("card_id"),
+            F.col("supp_card.name").alias("card_name"),
+            F.col("supp_card.rarity").alias("rarity"),
+            F.col("supp_card.maxLevel").alias("max_level"),
+            F.col("supp_card.elixirCost").alias("elixir_cost"),
+            F.col("supp_card.maxEvolutionLevel").alias("max_evolution_level")
+        )
 
     rename_players_dict = {
         "expLevel": "exp_level",
@@ -164,7 +209,10 @@ def transform():
     df_players = df_players \
     .withColumn("fav_card_name", F.col("current_favourite_card")["name"]) \
     .withColumn("fav_card_elixir", F.col("current_favourite_card")["elixirCost"].cast(IntegerType())) \
-    .withColumn("fav_card_rarity", F.col("current_favourite_card")["rarity"])
+    .withColumn("fav_card_rarity", F.col("current_favourite_card")["rarity"]) \
+    .withColumn("fav_card_id", F.col("current_favourite_card")["id"]) \
+    .withColumn("fav_card_max_level", F.col("current_favourite_card")["maxLevel"]) \
+    .withColumn("fav_card_max_evolution_level", F.col("current_favourite_card")["maxEvolutionLevel"]) 
     df_players = df_players.drop("current_favourite_card") 
 
 
@@ -236,8 +284,8 @@ def transform():
         F.col("battleTime").alias("battle_time"),
         F.col("gameMode.id").alias("game_mode_id"),
         F.col("gameMode.name").alias("game_mode_name"),
-        "isLadderTournament",
-        "isHostedMatch",
+        F.col("isLadderTournament").alias("is_ladder_tournament"),
+        F.col("isHostedMatch").alias("is_hosted_match"),
         F.col("team")[0]["tag"].alias("player_tag"),
         F.col("team")[0]["elixirLeaked"].alias("player_elixir_leaked"),
         F.col("team")[0]["kingTowerHitPoints"].alias("player_king_tower_hit_points"),
@@ -246,10 +294,10 @@ def transform():
         F.col("team")[0]["crowns"].alias("player_crowns"),
 
         F.col("opponent")[0]["tag"].alias("opp_tag"),
-        F.col("opponent")[0]["elixirLeaked"].alias("opp_elixirLeaked"),
+        F.col("opponent")[0]["elixirLeaked"].alias("opp_elixir_leaked"),
         F.col("opponent")[0]["kingTowerHitPoints"].alias("opp_king_tower_hit_points"),
         F.col("opponent")[0]["princessTowersHitPoints"].alias("opp_princess_tower_hit_points"),
-        F.col("opponent")[0]["trophyChange"].alias("opp_trophyChange"),
+        F.col("opponent")[0]["trophyChange"].alias("opp_trophy_change"),
         F.col("opponent")[0]["crowns"].alias("opp_crowns"),
     )
 
@@ -297,16 +345,22 @@ def transform():
         .jdbc(url=DB_URL, table='landing_members', properties=DB_PROPERTIES)
 
     df_player_cards.write.mode("overwrite") \
-        .jdbc(url=DB_URL, table='landing_cards', properties=DB_PROPERTIES)
+        .jdbc(url=DB_URL, table='landing_player_cards', properties=DB_PROPERTIES)
     
     df_support_card.write.mode("overwrite") \
-        .jdbc(url=DB_URL, table='landing_support_card', properties=DB_PROPERTIES)
+        .jdbc(url=DB_URL, table='landing_player_support_card', properties=DB_PROPERTIES)
 
     df_battle_info.write.mode("overwrite") \
-        .jdbc(url=DB_URL, table='landing_batlle_info', properties=DB_PROPERTIES)
+        .jdbc(url=DB_URL, table='landing_battle_info', properties=DB_PROPERTIES)
     
     df_player_cards_battle_log.write.mode("overwrite") \
         .jdbc(url=DB_URL, table='landing_player_cards_battle_log', properties=DB_PROPERTIES)
 
     df_opp_cards_battle_log.write.mode("overwrite") \
         .jdbc(url=DB_URL, table='landing_opp_cards_battle_log', properties=DB_PROPERTIES)
+
+    df_cards.write.mode("overwrite") \
+        .jdbc(url=DB_URL, table='landing_cards', properties=DB_PROPERTIES)
+
+    df_support_cards.write.mode("overwrite") \
+        .jdbc(url=DB_URL, table='landing_support_cards', properties=DB_PROPERTIES)
