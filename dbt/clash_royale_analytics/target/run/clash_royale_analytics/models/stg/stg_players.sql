@@ -19,6 +19,7 @@ select
     losses as player_losses,
     battle_count as player_battle_count,
     three_crown_wins as player_three_crown_wins,
-    war_day_wins as player_war_day_wins
+    war_day_wins as player_war_day_wins,
+    cast(snapshot_date as date) as snapshot_date
 from source_data
   );

@@ -17,6 +17,7 @@ select
     donations_received as member_donations_received,
     year,
     month,
-    day
+    day,
+    cast(snapshot_date as date) as snapshot_date
 from source_data
   );

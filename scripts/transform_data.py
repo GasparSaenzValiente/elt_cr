@@ -4,7 +4,7 @@ from pyspark.sql import functions as F
 from datetime import datetime
 
 
-def transform():
+def transform(execution_date, **kwargs):
     spark = SparkSession.builder \
     .appName("TransformTask") \
     .config(
@@ -237,30 +237,35 @@ def transform():
 
 
     # ADDING DATETIME
-    today = datetime.today()
-    year, month, day = today.year, today.month, today.day
+    snapshot_dt = datetime.strptime(execution_date, '%Y-%m-%d')
+    year, month, day = snapshot_dt.year, snapshot_dt.month, snapshot_dt.day
 
 
 
     df_players = df_players.withColumn("year", F.lit(year)) \
-                        .withColumn("month", F.lit(month)) \
-                        .withColumn("day", F.lit(day))
+                            .withColumn("month", F.lit(month)) \
+                            .withColumn("day", F.lit(day)) \
+                            .withColumn("snapshot_date", F.lit(execution_date))
 
     df_clans = df_clans.withColumn("year", F.lit(year)) \
-                    .withColumn("month", F.lit(month)) \
-                    .withColumn("day", F.lit(day))
+                    .   withColumn("month", F.lit(month)) \
+                        .withColumn("day", F.lit(day)) \
+                        .withColumn("snapshot_date", F.lit(execution_date))
 
     df_clan_members = df_clan_members.withColumn("year", F.lit(year)) \
                                     .withColumn("month", F.lit(month)) \
-                                    .withColumn("day", F.lit(day))
+                                    .withColumn("day", F.lit(day)) \
+                                    .withColumn("snapshot_date", F.lit(execution_date))
 
     df_player_cards = df_player_cards.withColumn("year", F.lit(year)) \
                                     .withColumn("month", F.lit(month)) \
-                                    .withColumn("day", F.lit(day))
+                                    .withColumn("day", F.lit(day)) \
+                                    .withColumn("snapshot_date", F.lit(execution_date))
 
     df_support_card = df_support_card.withColumn("year", F.lit(year)) \
                                     .withColumn("month", F.lit(month)) \
-                                    .withColumn("day", F.lit(day))
+                                    .withColumn("day", F.lit(day)) \
+                                    .withColumn("snapshot_date", F.lit(execution_date))
     
 
     # BATTLE LOG LOGIC
@@ -327,6 +332,11 @@ def transform():
         )
     )
 
+    df_battle_info = df_battle_info.withColumn("snapshot_date", F.lit(execution_date))
+    df_player_cards_battle_log = df_player_cards_battle_log.withColumn("snapshot_date", F.lit(execution_date))
+    df_opp_cards_battle_log = df_opp_cards_battle_log.withColumn("snapshot_date", F.lit(execution_date))
+
+
     DB_URL = "jdbc:postgresql://db:5432/cr_db"
 
     DB_PROPERTIES = {
@@ -335,32 +345,33 @@ def transform():
         "driver": "org.postgresql.Driver"
     }
 
-    df_players.write.mode("overwrite") \
+    df_players.write.mode("append") \
     .jdbc(url=DB_URL, table='landing_players', properties=DB_PROPERTIES)
 
-    df_clans.write.mode("overwrite") \
+    df_clans.write.mode("append") \
         .jdbc(url=DB_URL, table='landing_clans', properties=DB_PROPERTIES)
 
-    df_clan_members.write.mode("overwrite") \
+    df_clan_members.write.mode("append") \
         .jdbc(url=DB_URL, table='landing_members', properties=DB_PROPERTIES)
 
-    df_player_cards.write.mode("overwrite") \
+    df_player_cards.write.mode("append") \
         .jdbc(url=DB_URL, table='landing_player_cards', properties=DB_PROPERTIES)
     
-    df_support_card.write.mode("overwrite") \
+    df_support_card.write.mode("append") \
         .jdbc(url=DB_URL, table='landing_player_support_card', properties=DB_PROPERTIES)
 
-    df_battle_info.write.mode("overwrite") \
+    df_battle_info.write.mode("append") \
         .jdbc(url=DB_URL, table='landing_battle_info', properties=DB_PROPERTIES)
     
-    df_player_cards_battle_log.write.mode("overwrite") \
+    df_player_cards_battle_log.write.mode("append") \
         .jdbc(url=DB_URL, table='landing_player_cards_battle_log', properties=DB_PROPERTIES)
 
-    df_opp_cards_battle_log.write.mode("overwrite") \
+    df_opp_cards_battle_log.write.mode("append") \
         .jdbc(url=DB_URL, table='landing_opp_cards_battle_log', properties=DB_PROPERTIES)
 
+    # Tablas de Lookup (Sobreescribir): Usan 'overwrite' con truncate para seguridad
     df_cards.write.mode("overwrite") \
-        .jdbc(url=DB_URL, table='landing_cards', properties=DB_PROPERTIES)
+        .option("truncate", "true").jdbc(url=DB_URL, table='landing_cards', properties=DB_PROPERTIES)
 
     df_support_cards.write.mode("overwrite") \
-        .jdbc(url=DB_URL, table='landing_support_cards', properties=DB_PROPERTIES)
+        .option("truncate", "true").jdbc(url=DB_URL, table='landing_support_cards', properties=DB_PROPERTIES)

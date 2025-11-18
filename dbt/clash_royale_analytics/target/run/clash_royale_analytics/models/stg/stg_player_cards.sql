@@ -15,6 +15,7 @@ select
     cast(card_evolution_level as smallint) as player_card_evolution_level,
     year,
     month,
-    day
+    day,
+    cast(snapshot_date as date) as snapshot_date
 from source_data
   );

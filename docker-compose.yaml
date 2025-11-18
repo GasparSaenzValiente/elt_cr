@@ -28,6 +28,12 @@ x-airflow-common:
     _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-}
     # The following line can be used to set a custom config file, stored in the local config folder
     AIRFLOW_CONFIG: '/opt/airflow/config/airflow.cfg'
+    DBT_POSTGRES_HOST: db
+    DBT_POSTGRES_USER: cr_user
+    DBT_POSTGRES_PASSWORD: cr_pass
+    DBT_POSTGRES_DB: cr_db
+    DBT_POSTGRES_PORT: 5432
+    DBT_POSTGRES_SCHEMA: public
 
     PYTHONPATH: /opt/airflow/etl
   volumes:
@@ -94,22 +100,6 @@ services:
       start_period: 5s
     restart: always
 
-  dbt:
-    image: ghcr.io/dbt-labs/dbt-postgres:latest
-    container_name: dbt_cr
-    volumes:
-      - ${AIRFLOW_PROJ_DIR:-.}/dbt/clash_royale_analytics:/usr/app/dbt_project
-      - $HOME/.dbt/profiles.yml:/root/.dbt/profiles.yml
-    working_dir: /usr/app/dbt_project 
-    environment:
-      DBT_POSTGRES_HOST: db 
-      DBT_POSTGRES_USER: cr_user
-      DBT_POSTGRES_PASSWORD: cr_pass
-      DBT_POSTGRES_DB: cr_db
-      DBT_POSTGRES_SCHEMA: public
-    depends_on:
-      db:
-        condition: service_healthy
 
   redis:
     # Redis is limited to 7.2-bookworm due to licencing change

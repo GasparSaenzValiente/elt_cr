@@ -23,5 +23,6 @@ select
     cast(opp_princess_tower_hit_points[1] as smallint) as opp_left_tower_hp,
     cast(opp_princess_tower_hit_points[2] as smallint) as opp_right_tower_hp,
     cast(opp_trophy_change as smallint) as opp_trophy_change,
-    cast(opp_crowns as smallint) as opp_crowns
+    cast(opp_crowns as smallint) as opp_crowns,
+    cast(snapshot_date as date) as snapshot_date
 from source_data

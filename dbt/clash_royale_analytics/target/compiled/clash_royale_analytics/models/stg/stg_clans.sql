@@ -10,5 +10,6 @@ select
     cast(required_trophies as smallint) as clan_required_trophies,
     cast(members as smallint) as clan_members,
     cast(location_id as int) as clan_location_id,
-    cast(location_name as varchar(50)) as clan_location_name
+    cast(location_name as varchar(50)) as clan_location_name,
+    cast(snapshot_date as date) as snapshot_date
 from source_data

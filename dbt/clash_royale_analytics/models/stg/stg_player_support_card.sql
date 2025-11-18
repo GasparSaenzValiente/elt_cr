@@ -8,5 +8,6 @@ select
     cast(spp_level as smallint) as player_support_level,
     year,
     month,
-    day
+    day,
+    cast(snapshot_date as date) as snapshot_date
 from source_data

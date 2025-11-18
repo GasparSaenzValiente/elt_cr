@@ -6,5 +6,6 @@ select
     cast(opp_tag as varchar(10)) as battle_opp_tag,
     card_id as battle_opp_card_id,
     cast(card_name as varchar(50)) as battle_opp_card_name,
-    cast(card_level as smallint) as battle_opp_card_level
+    cast(card_level as smallint) as battle_opp_card_level,
+    cast(snapshot_date as date) as snapshot_date
 from source_data
