@@ -151,36 +151,16 @@ def transform(execution_date, **kwargs):
             F.col("supp_card.maxEvolutionLevel").alias("max_evolution_level")
         )
 
-    rename_players_dict = {
-        "expLevel": "exp_level",
-        "bestTrophies": "best_trophies",
-        "currentDeck": "current_deck",
-        "currentDeckSupportCards": "current_deck_support_cards",
-        "currentFavouriteCard": "current_favourite_card",
-        "battleCount": "battle_count",
-        "threeCrownWins": "three_crown_wins",
-        "warDayWins": "war_day_wins"
-    }
+    df_players = df_players \
+        .withColumn("clan", F.to_json(F.col("clan"))) \
+        .withColumn("currentFavouriteCard", F.to_json(F.col("currentFavouriteCard")))
 
-    rename_clans_dict = {
-        "clanScore": "clan_score",
-        "clanWarTrophies": "clan_war_trophies",
-        "requiredTrophies": "required_trophies",
-        "memberList": "member_list"
-    }
-
-    for oldname, newname in rename_players_dict.items():
-        df_players = df_players.withColumnRenamed(oldname, newname)
-    
-    for oldname, newname in rename_clans_dict.items():
-        df_clans = df_clans.withColumnRenamed(oldname, newname)
-
-    # PLAYER CLANTAG
-    df_players = df_players.withColumn("clan_tag", F.col("clan")["tag"]).drop("clan") 
+    df_clans = df_clans \
+        .withColumn("location", F.to_json(F.col("location")))
 
     # PLAYER CARDS
     df_player_cards = df_players \
-        .withColumn("card", F.explode("current_deck")) \
+        .withColumn("card", F.explode("currentDeck")) \
         .select(
             F.col("tag").alias("player_tag"),
             F.col("card.id").alias("card_id").cast(LongType()),
@@ -190,39 +170,22 @@ def transform(execution_date, **kwargs):
             F.col("card.elixirCost").alias("card_elixir_cost").cast(IntegerType()),
             F.col("card.evolutionLevel").alias("card_evolution_level").cast(IntegerType())
         )
-    df_players = df_players.drop("current_deck")
+    df_players = df_players.drop("currentDeck")
     
 
     # SUPPORT CARD
     df_support_card = df_players \
-        .withColumn("support_card", F.explode("current_deck_support_cards")) \
+        .withColumn("support_card", F.explode("currentDeckSupportCards")) \
         .select(
             F.col("tag").alias("player_tag"),
             F.col("support_card.name").alias("spp_name"),
             F.col("support_card.id").alias("spp_id").cast(LongType()),
             F.col("support_card.level").alias("spp_level").cast(IntegerType())
         )
-    df_players = df_players.drop("current_deck_support_cards")
+    df_players = df_players.drop("currentDeckSupportCards")
 
-
-    # FAV CARD
-    df_players = df_players \
-    .withColumn("fav_card_name", F.col("current_favourite_card")["name"]) \
-    .withColumn("fav_card_elixir", F.col("current_favourite_card")["elixirCost"].cast(IntegerType())) \
-    .withColumn("fav_card_rarity", F.col("current_favourite_card")["rarity"]) \
-    .withColumn("fav_card_id", F.col("current_favourite_card")["id"]) \
-    .withColumn("fav_card_max_level", F.col("current_favourite_card")["maxLevel"]) \
-    .withColumn("fav_card_max_evolution_level", F.col("current_favourite_card")["maxEvolutionLevel"]) 
-    df_players = df_players.drop("current_favourite_card") 
-
-
-    # CLANS INFO
-    df_clans = df_clans.withColumn("location_id", F.col("location")["id"]) \
-                .withColumn("location_name", F.col("location")["name"]) \
-                .drop("location")
-    
     # CLANS MEMBERS
-    df_clan_members = df_clans.withColumn("member", F.explode(F.col("member_list"))) \
+    df_clan_members = df_clans.withColumn("member", F.explode(F.col("memberList"))) \
                 .select(
                     F.col("tag").alias("clan_tag"),
                     F.col("member.tag").alias("member_tag"),
@@ -233,7 +196,7 @@ def transform(execution_date, **kwargs):
                     F.col("member.donations").alias("member_donations").cast(IntegerType()),
                     F.col("member.donationsReceived").alias("donations_received").cast(IntegerType())
                 )
-    df_clans = df_clans.drop("member_list")
+    df_clans = df_clans.drop("memberList")
 
 
     # ADDING DATETIME
