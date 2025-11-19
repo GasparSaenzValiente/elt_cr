@@ -1,0 +1,1 @@
+SELECT COUNT(*) FROM stg_battle_info

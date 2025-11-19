@@ -6,7 +6,7 @@
     with source_data as (
     select * from "cr_db"."public"."landing_clans"
 )
-select 
+select distinct on (tag, snapshot_date)
     cast(tag as varchar(10)) as clan_tag,
     cast(name as varchar(10)) as clan_name,
     cast(type as varchar(11)) as clan_type,
@@ -18,4 +18,5 @@ select
     cast(location::json->>'name' AS varchar(50)) AS location_name,
     cast(snapshot_date as date) as snapshot_date
 from source_data
+order by tag, snapshot_date
   );

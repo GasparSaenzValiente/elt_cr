@@ -74,7 +74,7 @@ def transform(execution_date, **kwargs):
                         StructField("level", IntegerType()),
                     ])
                 )),
-                StructField("elixirLeaked", IntegerType()),
+                StructField("elixirLeaked", FloatType()),
                 StructField("kingTowerHitPoints", IntegerType()),
                 StructField("trophyChange", IntegerType()),
                 StructField("crowns", IntegerType()),
@@ -92,7 +92,7 @@ def transform(execution_date, **kwargs):
                         StructField("level", IntegerType()),
                     ])
                 )),
-                StructField("elixirLeaked", IntegerType()),
+                StructField("elixirLeaked", FloatType()),
                 StructField("kingTowerHitPoints", IntegerType()),
                 StructField("trophyChange", IntegerType()),
                 StructField("crowns", IntegerType()),

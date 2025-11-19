@@ -6,7 +6,7 @@
     with source_data as (
     select * from "cr_db"."public"."landing_members"
 )
-select 
+select distinct on (clan_tag, member_tag, snapshot_date)
     cast(clan_tag as varchar(10)) as clan_tag,
     cast(member_tag as varchar(10)) as member_tag,
     cast(member_name as varchar(15)) as member_name,
@@ -20,4 +20,5 @@ select
     day,
     cast(snapshot_date as date) as snapshot_date
 from source_data
+order by clan_tag, member_tag, snapshot_date
   );

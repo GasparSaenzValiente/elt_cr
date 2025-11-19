@@ -1,7 +1,7 @@
 with source_data as (
     select * from "cr_db"."public"."landing_players"
 )
-select 
+select distinct on (tag, snapshot_date)
     cast(tag as varchar(10)) as player_tag,
     cast(clan::json->>'tag' AS varchar(15)) AS clan_tag,
     cast("currentFavouriteCard"::json->>'id' AS varchar(50)) AS fav_card_id,
@@ -18,3 +18,4 @@ select
 
     cast(snapshot_date as date) as snapshot_date
 from source_data
+order by tag, snapshot_date

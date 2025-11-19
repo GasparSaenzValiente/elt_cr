@@ -12,6 +12,7 @@ select
     cast(rarity as varchar(9)) as card_rarity,
     cast(max_level as smallint) as card_max_level,
     cast(elixir_cost as smallint) as card_elixir_cost,
-    cast(max_evolution_level as smallint) as card_max_evolution_level
+    coalesce(cast(max_evolution_level as smallint), 0) as card_max_evolution_level
 from source_data
+order by card_id
   );

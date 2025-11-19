@@ -1,7 +1,7 @@
 with source_data as (
     select * from {{ source('cr_db_landing', 'landing_battle_info') }}
 )
-select 
+select distinct on (battle_id, player_tag)
     cast(battle_id as varchar(64)) as battle_id,
     cast(battle_time as timestamp) as battle_time,
     game_mode_id,
@@ -26,3 +26,4 @@ select
     cast(opp_crowns as smallint) as opp_crowns,
     cast(snapshot_date as date) as snapshot_date
 from source_data
+order by battle_id, player_tag
