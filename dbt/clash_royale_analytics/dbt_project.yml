@@ -15,3 +15,12 @@ target-path: "target"
 clean-targets:
   - "target"
   - "dbt_packages"
+models:
+  clash_royale_analytics:
+    +materialized: view
+    
+    dim:
+      +materialized: table
+    
+    fct:
+      +materialized: table
