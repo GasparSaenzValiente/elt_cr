@@ -3,6 +3,7 @@ with battles as (
 )
 
 select
+    {{ dbt_utils.generate_surrogate_key(['battle_id', 'player_tag']) }} as battle_key,
     -- JOIN dims
     battle_id,
     player_tag,

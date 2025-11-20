@@ -3,6 +3,7 @@ with battles as (
 )
 
 select
+    md5(cast(coalesce(cast(battle_id as TEXT), '_dbt_utils_surrogate_key_null_') || '-' || coalesce(cast(player_tag as TEXT), '_dbt_utils_surrogate_key_null_') as TEXT)) as battle_key,
     -- JOIN dims
     battle_id,
     player_tag,
