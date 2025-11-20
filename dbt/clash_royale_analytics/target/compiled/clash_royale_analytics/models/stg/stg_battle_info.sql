@@ -12,17 +12,17 @@ select distinct on (battle_id, player_tag)
     cast(player_tag as varchar(9)) as player_tag,
     cast(player_elixir_leaked as smallint) as player_elixir_leaked,
     cast(player_king_tower_hit_points as smallint) as player_king_tower_hp,
-    cast(player_princess_tower_hit_points[1] as smallint) as player_left_tower_hp,
-    cast(player_princess_tower_hit_points[2] as smallint) as player_right_tower_hp,
-    cast(player_trophy_change as smallint) as player_trophy_change,
+    coalesce(cast(player_princess_tower_hit_points[1] as smallint), 0) as player_left_tower_hp,
+    coalesce(cast(player_princess_tower_hit_points[2] as smallint), 0) as player_right_tower_hp,
+    coalesce(cast(player_trophy_change as smallint), 0) as player_trophy_change,
     cast(player_crowns as smallint) as player_crowns,
 
     cast(opp_tag as varchar(9)) as opp_tag,
     cast(opp_elixir_leaked as smallint) as opp_elixir_leaked,
     cast(opp_king_tower_hit_points as smallint) as opp_king_tower_hp,
-    cast(opp_princess_tower_hit_points[1] as smallint) as opp_left_tower_hp,
-    cast(opp_princess_tower_hit_points[2] as smallint) as opp_right_tower_hp,
-    cast(opp_trophy_change as smallint) as opp_trophy_change,
+    coalesce(cast(opp_princess_tower_hit_points[1] as smallint), 0) as opp_left_tower_hp,
+    coalesce(cast(opp_princess_tower_hit_points[2] as smallint), 0) as opp_right_tower_hp,
+    coalesce(cast(opp_trophy_change as smallint), 0) as opp_trophy_change,
     cast(opp_crowns as smallint) as opp_crowns,
     cast(snapshot_date as date) as snapshot_date
 from source_data

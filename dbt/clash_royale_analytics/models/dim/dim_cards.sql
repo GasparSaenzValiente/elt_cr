@@ -1,4 +1,3 @@
-{{ config(materialized='table') }}
 with cards as (
     select
         card_id,

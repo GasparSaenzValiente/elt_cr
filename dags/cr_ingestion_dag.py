@@ -27,12 +27,11 @@ with ingestion:
     )
     dbt_run_task = BashOperator(
         task_id="dbt_run",
-        bash_command=f"cd {DBT_PROJECT_DIR} && dbt run"
+        bash_command=f"cd {DBT_PROJECT_DIR} && dbt run --exclude dim_date"
     )
     dbt_test_task = BashOperator(
         task_id="dbt_test",
         bash_command=f"cd {DBT_PROJECT_DIR} && dbt test"
     )
 
-    # 5. Define la secuencia COMPLETA del pipeline
     ingestion_task >> transform_task >> dbt_run_task >> dbt_test_task

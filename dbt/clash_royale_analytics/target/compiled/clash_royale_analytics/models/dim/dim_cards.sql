@@ -1,4 +1,3 @@
-
 with cards as (
     select
         card_id,

@@ -8,8 +8,7 @@
     as
   
   (
-    
-with cards as (
+    with cards as (
     select
         card_id,
         card_name,

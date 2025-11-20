@@ -1,1 +1,1 @@
-SELECT COUNT(*) FROM stg_battle_info
+SELECT * FROM fct_battles
