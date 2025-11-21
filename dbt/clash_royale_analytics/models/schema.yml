@@ -1,0 +1,129 @@
+version: 2
+
+models:
+  # -----------------------------------------------------------------------------
+  # DIMS
+  # -----------------------------------------------------------------------------
+  - name: dim_cards
+    description: "Catalogo maestro de cartas y support cards"
+    columns:
+      - name: card_id
+        tests:
+          - unique
+          - not_null
+      - name: card_rarity
+        tests:
+          - accepted_values:
+              values: ['common', 'rare', 'epic', 'legendary', 'champion']
+              config:
+                severity: warn
+      - name: card_type
+        tests:
+          - accepted_values:
+              values: ['Standard', 'Support']
+
+  - name: dim_players
+    description: "Directorio de jugadores (last state)"
+    columns:
+      - name: player_tag
+        tests:
+          - unique
+          - not_null
+      - name: player_exp_level
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 1"
+
+  - name: dim_game_modes
+    columns:
+      - name: game_mode_id
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_clans
+    columns:
+      - name: clan_tag
+        tests:
+          - unique
+          - not_null
+
+  # -----------------------------------------------------------------------------
+  # FACTS
+  # -----------------------------------------------------------------------------
+  - name: fct_battles
+    description: "Registro de cada batalla jugada"
+    columns:
+      - name: battle_key
+        tests:
+          - unique
+          - not_null
+      
+      - name: game_mode_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_game_modes')
+              field: game_mode_id
+
+      - name: is_victory
+        tests:
+          - accepted_values: 
+              values: [0, 1]
+      
+      - name: player_crowns
+        tests:
+          - accepted_values:
+              values: [0, 1, 2, 3]
+
+  - name: fct_cards_usage
+    description: "Desglose de que cartas se usaron en cada batalla"
+    columns:
+      - name: usage_key
+        tests:
+          - unique
+          - not_null
+      
+      - name: battle_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('fct_battles')
+              field: battle_id
+
+      - name: card_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_cards')
+              field: card_id
+      
+      - name: played_by
+        tests:
+          - accepted_values:
+              values: ['Player', 'Opponent']
+
+  - name: fct_player_card_holdings
+    description: "Snapshot diario de la colección de cartas del jugador"
+    columns:
+      - name: holding_key
+        tests:
+          - unique
+          - not_null
+      
+      - name: player_tag
+        tests:
+          - relationships:
+              to: ref('dim_players')
+              field: player_tag
+      
+      - name: card_id
+        tests:
+          - relationships:
+              to: ref('dim_cards')
+              field: card_id
+              
+      - name: card_level
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 1"

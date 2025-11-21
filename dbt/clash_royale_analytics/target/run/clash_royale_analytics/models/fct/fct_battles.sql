@@ -25,8 +25,14 @@ select
     battle_time,
 
     -- stg metrics
-    player_crowns,
-    opp_crowns,
+    case 
+        when player_crowns > 3 then 3
+        else coalesce(player_crowns, 0)
+    end as player_crowns,
+    case 
+        when opp_crowns > 3 then 3
+        else coalesce(opp_crowns, 0)
+    end as opp_crowns,
     player_trophy_change,
     player_elixir_leaked,
 
