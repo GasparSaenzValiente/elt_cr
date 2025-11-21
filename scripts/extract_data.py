@@ -41,65 +41,93 @@ def ingest_script():
             raise
 
     try:
-        print("Saving players info...")
         now = datetime.now()
-        for player_tag in PLAYER_TAGS_TO_TRACK:
+        
+        print("Fetching Top Global Clans (to find top players)...")
+        
+        top_clans_data = wrapper.get_top_clans_global(limit=1, locationId='global')
+        
+        dynamic_player_tags = []
+        discovered_clan_tags = set(CLANG_TAGS_TO_TRACK) 
+
+        if top_clans_data and 'items' in top_clans_data:
+            for clan in top_clans_data['items']:
+                clan_tag = clan['tag']
+                discovered_clan_tags.add(clan_tag)
+                
+                print(f"extracting members from top clan {clan_tag}...")
+                members_data = wrapper.get_clan_members(clan_tag)
+                
+                if members_data and 'items' in members_data:
+                    for member in members_data['items']:
+                        dynamic_player_tags.append(member['tag'])
+
+
+        all_players_to_track = list(set(PLAYER_TAGS_TO_TRACK + dynamic_player_tags))
+        
+        print(f"Total players to process: {len(all_players_to_track)}")
+        print(f"Total clans to process: {len(discovered_clan_tags)}")
+
+        # players info
+        print("Saving players info...")
+        for player_tag in all_players_to_track:
+            # Player
             player_info = wrapper.get_player_info(player_tag=player_tag)
             if player_info:
-                    object_key:str = f"raw/players/players_info/year={now:%Y}/month={now:%m}/day={now:%d}/{player_tag}.json" 
-                    s3.put_object(
-                        Bucket=bucket_name,
-                        Key=object_key,
-                        Body=json.dumps(player_info),
-                        ContentType="application/json"
-                    )
-                    print(f"Saved {player_tag} info")
+                object_key = f"raw/players/players_info/year={now:%Y}/month={now:%m}/day={now:%d}/{player_tag}.json" 
+                s3.put_object(
+                    Bucket=bucket_name,
+                    Key=object_key,
+                    Body=json.dumps(player_info),
+                    ContentType="application/json"
+                )
+                print(f"Saved {player_tag} info")
             else:
-                print(f"Could not get player info of player_tag: {player_tag}")
+                print(f"Could not get player info: {player_tag}")
             
+            # battle logs
             player_battle_log = wrapper.get_player_battle_log(player_tag=player_tag)
             if player_battle_log:
-                    object_key:str = f"raw/players/battle_log/year={now:%Y}/month={now:%m}/day={now:%d}/{player_tag}.json" 
-                    s3.put_object(
-                        Bucket=bucket_name,
-                        Key=object_key,
-                        Body=json.dumps(player_battle_log),
-                        ContentType="application/json"
-                    )
-                    print(f"Saved {player_tag} battle log info")         
+                object_key = f"raw/players/battle_log/year={now:%Y}/month={now:%m}/day={now:%d}/{player_tag}.json" 
+                s3.put_object(
+                    Bucket=bucket_name,
+                    Key=object_key,
+                    Body=json.dumps(player_battle_log),
+                    ContentType="application/json"
+                )
+                print(f"Saved {player_tag} battle log")         
             else:
-                print(f"Could not get player battle log info of player_tag: {player_tag}")
-                 
+                print(f"Could not get battle log: {player_tag}")
 
+        
+        # Clans
         print("Saving clans info...")
-        for clan_tag in CLANG_TAGS_TO_TRACK:
+        for clan_tag in discovered_clan_tags:
             clan_info = wrapper.get_clan_info(clan_tag=clan_tag)
             if clan_info:
-                    object_key:str = f"raw/clans/year={now:%Y}/month={now:%m}/day={now:%d}/{clan_tag}.json" 
-                    s3.put_object(
-                        Bucket=bucket_name,
-                        Key=object_key,
-                        Body=json.dumps(clan_info),
-                        ContentType="application/json"
-                    )
-                    print(f"Saved {clan_tag} info")
+                object_key = f"raw/clans/year={now:%Y}/month={now:%m}/day={now:%d}/{clan_tag}.json" 
+                s3.put_object(
+                    Bucket=bucket_name,
+                    Key=object_key,
+                    Body=json.dumps(clan_info),
+                    ContentType="application/json"
+                )
+                print(f"Saved {clan_tag} info")
             else:
-                print(f"Could not get clan info of clan_tag: {clan_tag}")
+                print(f"Could not get clan info: {clan_tag}")
 
+        # Cartas
         print("Saving cards info...")
         cards_info = wrapper.get_cards()
         if cards_info:
-                    object_key:str = f"raw/latest_cards.json" 
-                    s3.put_object(
-                        Bucket=bucket_name,
-                        Key=object_key,
-                        Body=json.dumps(cards_info),
-                        ContentType="application/json"
-                    )
-                    print(f"Saved {cards_info} info")
-        else:
-            print(f"Could not get clan info of clan_tag: {cards_info}")        
+            object_key = f"raw/latest_cards.json" 
+            s3.put_object(
+                Bucket=bucket_name,
+                Key=object_key,
+                Body=json.dumps(cards_info),
+                ContentType="application/json"
+            )
+            print(f"Saved cards info")        
 
     except Exception as e:
-        print(e)
-        pass
+        raise e

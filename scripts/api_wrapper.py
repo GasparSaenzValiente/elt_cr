@@ -58,3 +58,7 @@ class ClashRoyaleAPI:
     def get_cards(self):
         """Get all game cards"""
         return self._make_request("cards")
+    
+    def get_top_clans_global(self, limit: int = 10, locationId: str = 'global'):
+        """Get top clans"""
+        return self._make_request(f"locations/{locationId}/rankings/clans?limit={limit}")

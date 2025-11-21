@@ -1,9 +1,23 @@
--- 23:54:11  4 of 29 FAIL 1 accepted_values_fct_battles_player_crowns__0__1__2__3 ........... [FAIL 1 in 0.18s]
--- 23:54:11  2 of 29 ERROR accepted_values_dim_cards_rarity__Common__Rare__Epic__Legendary__Champion  [ERROR in 0.20s]
+SELECT 
+    c.card_name,
+    c.card_elixir_cost,
+    COUNT(*) as total_games,
+    -- Calculamos el Win Rate
+    ROUND(AVG(b.is_victory) * 100, 1) as win_rate_pct
+FROM fct_cards_usage u
+JOIN fct_battles b ON u.battle_id = b.battle_id
+JOIN dim_cards c ON u.card_id = c.card_id
+WHERE u.played_by = 'Player' -- Analizar solo tus mazos (o quita esto para ver global)
+GROUP BY 1, 2
+HAVING COUNT(*) > 5 -- Filtrar cartas que casi no usas
+ORDER BY win_rate_pct DESC;
 
-SELECT * FROM fct_battles
-WHERE player_crowns not in (0,1,2,3)
-OR player_crowns IS NULL;
-
-SELECT * FROM dim_cards
-WHERE card_rarity not in ('common','rare','epic','legendary','champion')
+SELECT 
+    p.player_name,
+    f.total_trophies,
+    f.daily_wins,
+    f.daily_trophy_change
+FROM fct_player_daily_stats f
+JOIN dim_players p ON f.player_tag = p.player_tag
+WHERE f.snapshot_date = CURRENT_DATE
+ORDER BY f.total_trophies DESC;

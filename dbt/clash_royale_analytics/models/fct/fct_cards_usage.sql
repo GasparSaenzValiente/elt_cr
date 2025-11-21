@@ -28,7 +28,7 @@ unioned_usage as (
     select * from opponent_cards
 )
 
-select
+select distinct on (battle_id, player_tag, card_id)
     -- 🗝️ Surrogate Key OBLIGATORIA (3 columnas para unicidad)
     {{ dbt_utils.generate_surrogate_key(['battle_id', 'player_tag', 'card_id']) }} as usage_key,
     
@@ -40,3 +40,4 @@ select
     snapshot_date
     
 from unioned_usage
+order by battle_id, player_tag, card_id desc
