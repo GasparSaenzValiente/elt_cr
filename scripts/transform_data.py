@@ -2,6 +2,7 @@ from pyspark.sql import SparkSession
 from pyspark.sql.types import *
 from pyspark.sql import functions as F
 from datetime import datetime
+from airflow.hooks.base import BaseHook
 
 
 def transform(execution_date, **kwargs):
@@ -18,12 +19,18 @@ def transform(execution_date, **kwargs):
     .config("spark.driver.extraClassPath", "/opt/spark/jars/postgresql-42.7.8.jar") \
     .getOrCreate()
 
+    minIO_conn = BaseHook.get_connection('minio_s3_conn')
+
+
     hadoop_conf = spark._jsc.hadoopConfiguration()
-    hadoop_conf.set("fs.s3a.endpoint", "http://minio:9000")
-    hadoop_conf.set("fs.s3a.access.key", "admin")
-    hadoop_conf.set("fs.s3a.secret.key", "password")
+    hadoop_conf.set("fs.s3a.endpoint", minIO_conn.extra_dejson.get('endpoint_url'))
+    hadoop_conf.set("fs.s3a.access.key", minIO_conn.login)
+    hadoop_conf.set("fs.s3a.secret.key", minIO_conn.password)
     hadoop_conf.set("fs.s3a.path.style.access", "true")
     hadoop_conf.set("fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
+
+
+    pg_conn = BaseHook.get_connection('pg_cr_dw')
 
     # schemas 
     player_schema = StructType([
@@ -303,8 +310,8 @@ def transform(execution_date, **kwargs):
     DB_URL = "jdbc:postgresql://db:5432/cr_db"
 
     DB_PROPERTIES = {
-        "user": "cr_user",
-        "password": "cr_pass",
+        "user": pg_conn.login,
+        "password": pg_conn.password,
         "driver": "org.postgresql.Driver"
     }
 

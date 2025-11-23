@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from datetime import datetime
 from scripts.api_wrapper import ClashRoyaleAPI
 from botocore.exceptions import ClientError
+from airflow.hooks.base import BaseHook
 
 PLAYER_TAGS_TO_TRACK = ["#2PPCJ0UUP", "#VP9GJYQ2", "#G9YV9GR8R", "#22GPGCVCV", "#C0RL8CVCR", "#2L8JG2GRJ"]
 CLANG_TAGS_TO_TRACK = ["#2L80YUL", "#QCV8JQVR", "#2L8PCVP0", "#Q0U2PLGU"]
@@ -19,14 +20,16 @@ def ingest_script():
 
 
     wrapper = ClashRoyaleAPI(api_key=API_KEY) 
+    minIO_conn = BaseHook.get_connection('minio_s3_conn')
 
     s3 = boto3.client(
         "s3",
-        endpoint_url="http://minio:9000", 
-        aws_access_key_id="admin",
-        aws_secret_access_key="password",
+        endpoint_url=minIO_conn.extra_dejson.get('endpoint_url'), 
+        aws_access_key_id=minIO_conn.login,
+        aws_secret_access_key=minIO_conn.password,
         region_name="us-east-1"
     )
+    
     bucket_name = "cr-raw-data"
     
 

@@ -29,7 +29,6 @@ unioned_usage as (
 )
 
 select distinct on (battle_id, player_tag, card_id)
-    -- 🗝️ Surrogate Key OBLIGATORIA (3 columnas para unicidad)
     {{ dbt_utils.generate_surrogate_key(['battle_id', 'player_tag', 'card_id']) }} as usage_key,
     
     battle_id,
