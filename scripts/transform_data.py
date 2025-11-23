@@ -30,7 +30,7 @@ def transform(execution_date, **kwargs):
     hadoop_conf.set("fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
 
 
-    pg_conn = BaseHook.get_connection('pg_cr_dw')
+    pg_conn = BaseHook.get_connection('postgres_cr_dw')
 
     # schemas 
     player_schema = StructType([
