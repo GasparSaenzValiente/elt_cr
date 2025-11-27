@@ -57,7 +57,7 @@ x-airflow-common:
 
 services:
   db:
-    image: postgres:latest 
+    image: postgres:16 
     container_name: cr_pg_dbcr_
     environment:
       POSTGRES_USER: cr_user
