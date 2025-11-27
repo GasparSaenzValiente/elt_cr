@@ -2,14 +2,13 @@ SELECT
     c.card_name,
     c.card_elixir_cost,
     COUNT(*) as total_games,
-    -- Calculamos el Win Rate
     ROUND(AVG(b.is_victory) * 100, 1) as win_rate_pct
 FROM fct_cards_usage u
 JOIN fct_battles b ON u.battle_id = b.battle_id
 JOIN dim_cards c ON u.card_id = c.card_id
-WHERE u.played_by = 'Player' -- Analizar solo tus mazos (o quita esto para ver global)
+WHERE u.played_by = 'Player'
 GROUP BY 1, 2
-HAVING COUNT(*) > 5 -- Filtrar cartas que casi no usas
+HAVING COUNT(*) > 5
 ORDER BY win_rate_pct DESC;
 
 SELECT 
