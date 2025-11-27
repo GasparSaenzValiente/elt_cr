@@ -48,6 +48,10 @@ Data flow follows a standard lakehouse pattern:
     cp env.example.txt .env
     ```
     Open `.env` and paste your specific `CLASH_API_KEY`. Connections for the database and storage are pre-configured for the docker network.
+    **Dynamic Tracking List (Optional)**
+    To create a custom list of VIP players/clans, create a JSON variable in .env named `cr_tracking_config`, then put the tags you want to track.
+
+    If this variable is not set, the pipeline will only process the top global clans and their members automatically discovered.
 
 3.  **Start services**
     ```bash

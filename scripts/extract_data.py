@@ -7,9 +7,7 @@ from datetime import datetime
 from scripts.api_wrapper import ClashRoyaleAPI
 from botocore.exceptions import ClientError
 from airflow.hooks.base import BaseHook
-
-PLAYER_TAGS_TO_TRACK = ["#2PPCJ0UUP", "#VP9GJYQ2", "#G9YV9GR8R", "#22GPGCVCV", "#C0RL8CVCR", "#2L8JG2GRJ"]
-CLANG_TAGS_TO_TRACK = ["#2L80YUL", "#QCV8JQVR", "#2L8PCVP0", "#Q0U2PLGU"]
+from airflow.models import Variable
 
 def ingest_script():
     # load api key and check
@@ -43,6 +41,18 @@ def ingest_script():
         else:
             raise
 
+
+    try:
+        tracking_config = Variable.get("cr_tracking_config", deserialize_json=True)
+        player_tags_to_track = tracking_config.get("players", [])
+        clan_tags_to_track = tracking_config.get("clans", [])
+        print(f"Loaded config: {len(player_tags_to_track)} players, {len(clan_tags_to_track)} clans.")
+        
+    except KeyError:
+        print("Variable 'cr_tracking_config' not found. Starting with empty VIP lists.")
+        player_tags_to_track = []
+        clan_tags_to_track = []
+
     try:
         now = datetime.now()
         
@@ -51,7 +61,7 @@ def ingest_script():
         top_clans_data = wrapper.get_top_clans_global(limit=1, locationId='global')
         
         dynamic_player_tags = []
-        discovered_clan_tags = set(CLANG_TAGS_TO_TRACK) 
+        discovered_clan_tags = set(clan_tags_to_track) 
 
         if top_clans_data and 'items' in top_clans_data:
             for clan in top_clans_data['items']:
@@ -66,7 +76,7 @@ def ingest_script():
                         dynamic_player_tags.append(member['tag'])
 
 
-        all_players_to_track = list(set(PLAYER_TAGS_TO_TRACK + dynamic_player_tags))
+        all_players_to_track = list(set(player_tags_to_track + dynamic_player_tags))
         
         print(f"Total players to process: {len(all_players_to_track)}")
         print(f"Total clans to process: {len(discovered_clan_tags)}")
