@@ -1,4 +1,4 @@
-# Clash royale analytics platform
+# Clash royale ELT pipeline
 
 End-to-end data pipeline designed to extract, process, and model data from the clash royale api. The system tracks player performance, card economy, and meta trends using a hybrid spark and dbt architecture.
 
@@ -20,7 +20,7 @@ Data flow follows a standard lakehouse pattern:
 
 ## Tech stack
 
-* **language:** python 3.12
+* **language:** python
 * **storage:** minio (s3), postgresql
 * **processing:** apache spark (pyspark)
 * **transformation:** dbt core
@@ -79,9 +79,3 @@ configured in `schema.yml`. the pipeline enforces:
 * **referential integrity:** validates relationships between battles and players/cards.
 * **uniqueness:** uses surrogate keys to prevent duplicates.
 * **validity:** checks for logical ranges
-
-## Engineering decisions
-
-* **hybrid spark + dbt:** spark is used for distributed extraction and heavy json parsing (exploding arrays), while dbt is used for business logic, testing, and lineage.
-* **history handling:** player stats are modeled as daily snapshots to track evolution; battles are treated as immutable events with deduplication logic based on unique ids.
-* **security:** no credentials are hardcoded. configuration is injected via environment variables and airflow connections.
