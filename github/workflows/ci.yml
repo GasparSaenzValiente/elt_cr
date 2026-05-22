@@ -1,0 +1,93 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    name: Lint (flake8)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install flake8
+        run: pip install flake8
+
+      - name: Run flake8
+        run: |
+          flake8 scripts/ dags/ \
+            --max-line-length=100 \
+            --exclude=__pycache__ \
+            --ignore=E501,W503
+
+  dbt-compile:
+    name: dbt compile
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dbt-postgres
+        run: pip install dbt-postgres
+
+      - name: Create mock profiles.yml
+        run: |
+          mkdir -p ~/.dbt
+          cat > ~/.dbt/profiles.yml << 'EOF'
+          clash_royale_analytics:
+            target: dev
+            outputs:
+              dev:
+                type: postgres
+                host: localhost
+                user: ci_user
+                password: ci_pass
+                port: 5432
+                dbname: ci_db
+                schema: public
+          EOF
+
+      - name: dbt deps
+        working-directory: dbt/clash_royale_analytics
+        run: dbt deps
+
+      - name: dbt compile
+        working-directory: dbt/clash_royale_analytics
+        run: dbt compile
+        # compile valida la sintaxis SQL y las referencias entre modelos
+        # sin necesitar una base de datos real
+
+  python-tests:
+    name: Python tests (pytest)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install pytest pytest-mock requests-mock
+          pip install -r requirements.txt
+
+      - name: Run tests
+        env:
+          CLASH_API_KEY: "test-key-for-ci"
+        run: pytest tests/ -v --tb=short
+        # El directorio tests/ debe crearse con los tests unitarios.
+        # Ver la sección "Tests" del README para ejemplos.

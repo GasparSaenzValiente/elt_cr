@@ -1,129 +1,297 @@
 version: 2
 
 models:
-  # -----------------------------------------------------------------------------
-  # DIMS
-  # -----------------------------------------------------------------------------
+  # ---------------------------------------------------------------------------
+  # DIMENSIONES
+  # ---------------------------------------------------------------------------
+
   - name: dim_cards
-    description: "Catalogo maestro de cartas y support cards"
+    description: >
+      Catálogo maestro unificado de cartas estándar y support cards del juego.
+      Combina ambas fuentes con un campo card_type para distinguirlas.
     columns:
       - name: card_id
+        description: "Identificador único de la carta (proviene de la API de Clash Royale)."
         tests:
           - unique
           - not_null
+      - name: card_name
+        description: "Nombre de la carta tal como aparece en el juego."
+        tests:
+          - not_null
       - name: card_rarity
+        description: "Rareza de la carta."
         tests:
           - accepted_values:
               values: ['common', 'rare', 'epic', 'legendary', 'champion']
               config:
                 severity: warn
       - name: card_type
+        description: "Categoría de la carta: 'Standard' o 'Support'."
         tests:
           - accepted_values:
               values: ['Standard', 'Support']
+      - name: card_elixir_cost
+        description: "Costo en elixir para desplegar la carta (0 para cartas de soporte sin costo)."
+      - name: card_max_level
+        description: "Nivel máximo alcanzable por la carta."
 
   - name: dim_players
-    description: "Directorio de jugadores (last state)"
+    description: >
+      Directorio de jugadores con su último estado conocido (last-value per partition).
+      Un jugador aparece una sola vez con los datos del snapshot más reciente.
     columns:
       - name: player_tag
+        description: "Identificador único del jugador en la API de Clash Royale (ej. '#2PPCJ0UUP')."
         tests:
           - unique
           - not_null
+      - name: player_name
+        description: "Nombre del jugador en el juego."
+      - name: clan_tag
+        description: "Tag del clan al que pertenece el jugador (puede ser null si no está en clan)."
       - name: player_exp_level
+        description: "Nivel de experiencia del jugador."
         tests:
+          - not_null
           - dbt_utils.expression_is_true:
               expression: ">= 1"
-
-  - name: dim_game_modes
-    columns:
-      - name: game_mode_id
-        tests:
-          - unique
-          - not_null
+      - name: player_trophies
+        description: "Trofeos actuales del jugador."
+      - name: fav_card_id
+        description: "ID de la carta favorita del jugador."
 
   - name: dim_clans
+    description: >
+      Directorio de clanes con su último estado conocido (last-value per partition).
     columns:
       - name: clan_tag
+        description: "Identificador único del clan en la API (ej. '#2L80YUL')."
         tests:
           - unique
           - not_null
+      - name: clan_name
+        description: "Nombre del clan."
+      - name: clan_type
+        description: "Tipo de clan: open, inviteOnly o closed."
+      - name: clan_members
+        description: "Cantidad actual de miembros en el clan."
 
-  # -----------------------------------------------------------------------------
-  # FACTS
-  # -----------------------------------------------------------------------------
+  - name: dim_game_modes
+    description: >
+      Catálogo de modos de juego descubiertos a partir de los battle logs.
+    columns:
+      - name: game_mode_id
+        description: "Identificador único del modo de juego."
+        tests:
+          - unique
+          - not_null
+      - name: game_mode_name
+        description: "Nombre del modo de juego (ej. 'Ladder', 'ClanWar')."
+
+  # ---------------------------------------------------------------------------
+  # HECHOS
+  # ---------------------------------------------------------------------------
+
   - name: fct_battles
-    description: "Registro de cada batalla jugada"
+    description: >
+      Registro a nivel de batalla-jugador. Cada fila representa la participación
+      de un jugador en una batalla específica, con métricas de performance.
+      Granularidad: 1 fila por (battle_id, player_tag).
     columns:
       - name: battle_key
+        description: "Clave surrogate generada con dbt_utils (battle_id + player_tag)."
         tests:
           - unique
           - not_null
-      
+      - name: battle_id
+        description: "Identificador único de la batalla (hash SHA-256 generado en Spark)."
+        tests:
+          - not_null
+      - name: player_tag
+        description: "Tag del jugador protagonista de esta fila."
+        tests:
+          - not_null
+          # CAMBIO: agregado test de integridad referencial con dim_players
+          - relationships:
+              to: ref('dim_players')
+              field: player_tag
+              config:
+                severity: warn
       - name: game_mode_id
+        description: "FK al modo de juego."
         tests:
           - not_null
           - relationships:
               to: ref('dim_game_modes')
               field: game_mode_id
-
       - name: is_victory
+        description: "1 si el jugador ganó la batalla, 0 si perdió."
         tests:
-          - accepted_values: 
+          - accepted_values:
               values: [0, 1]
-      
       - name: player_crowns
+        description: "Coronas obtenidas por el jugador (0-3)."
         tests:
           - accepted_values:
               values: [0, 1, 2, 3]
+      - name: player_elixir_leaked
+        description: "Elixir desperdiciado por el jugador durante la batalla."
+      - name: snapshot_date
+        description: "Fecha en que se capturó el dato (partición diaria)."
+        tests:
+          - not_null
 
   - name: fct_cards_usage
-    description: "Desglose de que cartas se usaron en cada batalla"
+    description: >
+      Desglose de las cartas usadas en cada batalla, unificando el mazo
+      del jugador y del oponente. Permite analizar el meta y el win rate por carta.
+      Granularidad: 1 fila por (battle_id, player_tag, card_id).
     columns:
       - name: usage_key
+        description: "Clave surrogate (battle_id + player_tag + card_id)."
         tests:
           - unique
           - not_null
-      
       - name: battle_id
+        description: "FK a fct_battles."
         tests:
           - not_null
           - relationships:
               to: ref('fct_battles')
               field: battle_id
-
       - name: card_id
+        description: "FK a dim_cards."
         tests:
           - not_null
           - relationships:
               to: ref('dim_cards')
               field: card_id
-      
       - name: played_by
+        description: "Indica si la carta fue usada por el jugador ('Player') o el rival ('Opponent')."
         tests:
           - accepted_values:
               values: ['Player', 'Opponent']
+      - name: card_level
+        description: "Nivel al que se jugó la carta en esta batalla."
 
   - name: fct_player_card_holdings
-    description: "Snapshot diario de la colección de cartas del jugador"
+    description: >
+      Snapshot diario de las cartas que posee cada jugador, incluyendo
+      cartas estándar y de soporte. Permite trackear la progresión de la
+      colección de un jugador a lo largo del tiempo.
+      Granularidad: 1 fila por (player_tag, card_id, snapshot_date).
     columns:
       - name: holding_key
+        description: "Clave surrogate (player_tag + card_id + snapshot_date)."
         tests:
           - unique
           - not_null
-      
       - name: player_tag
+        description: "FK a dim_players."
         tests:
+          - not_null
           - relationships:
               to: ref('dim_players')
               field: player_tag
-      
+              config:
+                severity: warn
       - name: card_id
+        description: "FK a dim_cards."
         tests:
+          - not_null
           - relationships:
               to: ref('dim_cards')
               field: card_id
-              
       - name: card_level
+        description: "Nivel actual de la carta para este jugador."
         tests:
+          - not_null
           - dbt_utils.expression_is_true:
               expression: ">= 1"
+      - name: card_type_category
+        description: "Categoría de la carta: 'Standard' o 'Support'."
+        tests:
+          - accepted_values:
+              values: ['Standard', 'Support']
+
+  # CAMBIO: agregado fct_player_daily_stats que no tenía ningún test
+  - name: fct_player_daily_stats
+    description: >
+      Snapshot diario de estadísticas de jugadores con métricas de flujo diario
+      (deltas calculados con window functions). Permite trackear la evolución
+      de trofeos, victorias y donaciones día a día.
+      Granularidad: 1 fila por (player_tag, snapshot_date).
+    columns:
+      - name: daily_stats_key
+        description: "Clave surrogate (player_tag + snapshot_date)."
+        tests:
+          - unique
+          - not_null
+      - name: player_tag
+        description: "FK a dim_players."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_players')
+              field: player_tag
+              config:
+                severity: warn
+      - name: snapshot_date
+        description: "Fecha del snapshot diario."
+        tests:
+          - not_null
+      - name: total_trophies
+        description: "Total acumulado de trofeos del jugador en esta fecha."
+      - name: daily_trophy_change
+        description: "Delta de trofeos respecto al día anterior (puede ser negativo)."
+      - name: daily_wins
+        description: "Victorias estimadas en el día (delta respecto al día anterior)."
+      - name: daily_battles_played
+        description: "Batallas estimadas en el día (delta respecto al día anterior)."
+      - name: estimated_daily_donations
+        description: >
+          Donaciones estimadas del día. Maneja el reseteo semanal:
+          si el valor actual es menor al del día anterior, se asume reseteo.
+
+  # ---------------------------------------------------------------------------
+  # STAGING (documentación básica para dbt docs)
+  # ---------------------------------------------------------------------------
+
+  # CAMBIO: agregada documentación de staging (antes completamente ausente)
+  - name: stg_players
+    description: "Datos de jugadores limpios y tipados desde landing_players."
+    columns:
+      - name: player_tag
+        tests:
+          - not_null
+
+  - name: stg_clans
+    description: "Datos de clanes limpios y tipados desde landing_clans."
+    columns:
+      - name: clan_tag
+        tests:
+          - not_null
+
+  - name: stg_battle_info
+    description: "Información de batallas limpia y deduplicada desde landing_battle_info."
+    columns:
+      - name: battle_id
+        tests:
+          - not_null
+
+  - name: stg_cards
+    description: "Catálogo de cartas estándar desde landing_cards."
+    columns:
+      - name: card_id
+        tests:
+          - not_null
+          - unique
+
+  - name: stg_support_cards
+    description: "Catálogo de support cards desde landing_support_cards."
+    columns:
+      - name: support_id
+        tests:
+          - not_null
+          - unique

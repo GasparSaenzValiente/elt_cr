@@ -1,85 +1,183 @@
-# Clash royale ELT pipeline
+# Clash Royale Analytics Platform
 
-End-to-end data pipeline designed to extract, process, and model data from the clash royale api. The system tracks player performance, card economy, and meta trends using a hybrid spark and dbt architecture.
+> End-to-end ELT pipeline que extrae datos de la Clash Royale API, los procesa con Apache Spark y construye un data warehouse analítico con dbt.
 
-## Overview
+![CI](https://github.com/GasparSaenzValiente/elt_cr/actions/workflows/ci.yml/badge.svg)
+![Python](https://img.shields.io/badge/Python-3.12-blue)
+![Airflow](https://img.shields.io/badge/Airflow-3.0-red)
+![dbt](https://img.shields.io/badge/dbt-core-orange)
 
-This project implements an elt pipeline that ingests semi-structured json data into a data lake, processes it using spark for schema enforcement and partitioning, and transforms it into a dimensional model (star schema) using dbt for analytics.
+---
 
-The entire stack is containerized with docker for consistent deployment.
+## Arquitectura
 
-## Architecture
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                        Apache Airflow 3                             │
+│  ┌─────────────┐   ┌──────────────┐   ┌────────────┐   ┌────────┐  │
+│  │  Ingestion  │──▶│  Transform   │──▶│  dbt run   │──▶│dbt test│  │
+│  │  (Python)   │   │  (PySpark)   │   │            │   │        │  │
+│  └──────┬──────┘   └──────┬───────┘   └────────────┘   └────────┘  │
+└─────────│────────────────│────────────────────────────────────────-─┘
+          │                │
+          ▼                ▼
+  ┌───────────────┐  ┌─────────────────┐
+  │  MinIO (S3)   │  │   PostgreSQL    │
+  │  Data Lake    │  │   (landing →    │
+  │  raw/JSON     │  │   star schema)  │
+  └───────────────┘  └─────────────────┘
+```
 
-Data flow follows a standard lakehouse pattern:
+**Flujo de datos (patrón Lakehouse):**
 
-1. **ingestion**: python script fetches data using a "clan-first" discovery strategy to maximize player coverage.
-2. **data lake**: raw json is stored in minio (s3 compatible storage).
-3. **processing**: apache spark reads raw data, handles nested arrays, and loads cleaned data into postgres.
-4. **transformation**: dbt builds a star schema (facts and dimensions) and enforces data quality tests.
-5. **orchestration**: apache airflow manages the dependency graph and scheduling.
+1. **Ingesta** — script Python con estrategia "clan-first": descubre jugadores a partir de los top clanes globales. Los datos raw (JSON) se guardan particionados por fecha en MinIO.
+2. **Data Lake** — MinIO como almacenamiento S3-compatible. Particionado por `year/month/day` para optimizar las lecturas de Spark.
+3. **Procesamiento** — Apache Spark lee el JSON raw, resuelve arrays anidados (cartas, miembros) y carga las tablas `landing_*` en PostgreSQL.
+4. **Transformación** — dbt construye un star schema Kimball con tests de calidad de datos.
+5. **Orquestación** — Airflow gestiona el grafo de dependencias y el scheduling diario.
 
-## Tech stack
+## Stack tecnológico
 
-* **language:** python
-* **storage:** minio (s3), postgresql
-* **processing:** apache spark (pyspark)
-* **transformation:** dbt core
-* **orchestration:** apache airflow
-* **infrastructure:** docker compose
+| Capa | Tecnología |
+|------|-----------|
+| Lenguaje | Python 3.12 |
+| Orquestación | Apache Airflow 3.0 (CeleryExecutor) |
+| Procesamiento | Apache Spark 3.5 (PySpark) |
+| Data Lake | MinIO (S3-compatible) |
+| Data Warehouse | PostgreSQL 16 |
+| Transformación | dbt Core |
+| Infraestructura | Docker Compose |
+| CI | GitHub Actions |
 
-## Setup & usage
+## Modelo de datos
 
-### Prerequisites
+Star schema siguiendo la metodología Kimball:
 
-* docker desktop installed and running.
-* clash royale developer account (to obtain an api key).
+```
+                    ┌─────────────┐
+                    │  dim_date   │
+                    └──────┬──────┘
+                           │
+ ┌─────────────┐    ┌──────┴──────┐    ┌──────────────────┐
+ │ dim_players │───▶│ fct_battles │◀───│  dim_game_modes  │
+ └─────────────┘    └──────┬──────┘    └──────────────────┘
+                           │
+ ┌─────────────┐    ┌──────┴──────────┐
+ │  dim_cards  │───▶│ fct_cards_usage │
+ └──────┬──────┘    └─────────────────┘
+        │
+        │           ┌──────────────────────┐
+        └──────────▶│ fct_player_card_     │
+                    │ holdings             │
+                    └──────────────────────┘
+ ┌─────────────┐    ┌──────────────────────┐
+ │  dim_clans  │───▶│ fct_player_daily_    │
+ └─────────────┘    │ stats                │
+                    └──────────────────────┘
+```
 
-### Quick start
+### Tablas de hechos
 
-1.  **Clone the repository**
-    ```bash
-    git clone [https://github.com/your-username/clash-royale-elt.git](https://github.com/your-username/elt_cr.git)
-    cd elt_cr
-    ```
+| Tabla | Granularidad | Descripción |
+|-------|-------------|-------------|
+| `fct_battles` | 1 fila por (battle_id, player_tag) | Métricas por batalla: coronas, elixir, torres, resultado |
+| `fct_cards_usage` | 1 fila por (battle_id, player_tag, card_id) | Cartas usadas por batalla para análisis de meta |
+| `fct_player_daily_stats` | 1 fila por (player_tag, snapshot_date) | Snapshot diario con deltas de trofeos, victorias y donaciones |
+| `fct_player_card_holdings` | 1 fila por (player_tag, card_id, snapshot_date) | Colección diaria de cartas por jugador |
 
-2.  **Configure environment**
-    
-    ```bash
-    cp env.example.txt .env
-    ```
-    Open `.env` and paste your specific `CLASH_API_KEY`. Connections for the database and storage are pre-configured for the docker network.
-    **Dynamic Tracking List (Optional)**
-    To create a custom list of VIP players/clans, create a JSON variable in .env named `cr_tracking_config`, then put the tags you want to track.
+## Setup
 
-    If this variable is not set, the pipeline will only process the top global clans and their members automatically discovered.
+### Prerequisitos
 
-3.  **Start services**
-    ```bash
-    docker compose up -d
-    ```
+- Docker Desktop instalado y corriendo
+- Cuenta de desarrollador de Clash Royale (para obtener API key)
 
-4.  **Run the pipeline**
-    * access airflow at `http://localhost:8080` (credentials: `airflow` / `airflow`).
-    * trigger the `ingest_script` dag.
+### Inicio rápido
 
-    This will execute the following flow:
-    * fetch top global clans and discover players.
-    * dump raw json data to minio.
-    * process data with spark and load to postgres.
-    * run dbt models and tests.
+**1. Clonar el repositorio**
+```bash
+git clone https://github.com/GasparSaenzValiente/elt_cr.git
+cd elt_cr
+```
 
-## Data modeling
+**2. Configurar el entorno**
+```bash
+cp .env.example .env
+```
 
-The warehouse is modeled using a kimball star schema approach.
+Editar `.env` y completar los valores marcados con `<...>`:
+- `CLASH_API_KEY` — obtener en https://developer.clashroyale.com/
+- `AIRFLOW_FERNET_KEY` — generar con:
+  ```bash
+  python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+  ```
+- Contraseñas para PostgreSQL, MinIO y la UI de Airflow
 
-### Core models
-* **`fct_battles`**: transactional granularity per battle. contains metrics like crowns, elixir leaked, and tower damage.
-* **`fct_cards_usage`**: union of player and opponent cards to analyze meta trends.
-* **`fct_player_daily_stats`**: periodic snapshot calculating daily flow (delta of trophies, wins) using window functions.
-* **`dim_cards`**, **`dim_players`**, **`dim_clans`**: standard dimensions for filtering and grouping.
+**3. Levantar los servicios**
+```bash
+docker compose up -d
+```
 
-### Data quality
-configured in `schema.yml`. the pipeline enforces:
-* **referential integrity:** validates relationships between battles and players/cards.
-* **uniqueness:** uses surrogate keys to prevent duplicates.
-* **validity:** checks for logical ranges
+**4. Ejecutar el pipeline**
+- Acceder a Airflow en `http://localhost:8080`
+- Activar el DAG `clash_royale_pipeline`
+- El pipeline ejecuta automáticamente a medianoche o puede dispararse manualmente
+
+**Servicios disponibles:**
+
+| Servicio | URL | Credenciales |
+|---------|-----|-------------|
+| Airflow | http://localhost:8080 | Ver `.env` → `AIRFLOW_WWW_USER_*` |
+| MinIO Console | http://localhost:9001 | Ver `.env` → `MINIO_ROOT_*` |
+| PostgreSQL | localhost:5432 | Ver `.env` → `CR_POSTGRES_*` |
+
+## Calidad de datos
+
+Los tests de dbt en `models/schema.yml` verifican:
+- **Unicidad**: claves surrogate únicas en todos los modelos de hechos
+- **Integridad referencial**: FK válidas entre hechos y dimensiones
+- **Rangos válidos**: coronas entre 0-3, nivel de exp >= 1, nivel de carta >= 1
+- **Valores aceptados**: rareza, tipo de carta, resultado de batalla
+
+## Decisiones de ingeniería
+
+**Spark para extracción + dbt para transformación**
+Spark maneja la complejidad del JSON anidado (arrays de cartas, miembros de clan) de forma distribuida. dbt se ocupa de la lógica de negocio, los tests y el linaje, donde brilla más que Spark.
+
+**Identificador de batalla generado localmente**
+La API de Clash Royale no expone un ID de batalla. Se genera un `battle_id` determinístico como SHA-256 de `(battleTime, min(player_tag, opp_tag), max(player_tag, opp_tag))`, lo que garantiza idempotencia en re-ejecuciones.
+
+**Snapshots vs. slowly changing dimensions**
+Los datos de jugadores y clanes se modelan como snapshots diarios en staging, y las dimensiones exponen solo el último estado conocido. Esto permite análisis histórico sin la complejidad de SCD Tipo 2.
+
+**Estrategia de deduplicación**
+`DISTINCT ON (key_columns) ... ORDER BY snapshot_date DESC` en los modelos staging garantiza una sola fila por entidad sin depender de `ROW_NUMBER()`, que es más costoso en PostgreSQL.
+
+## Estructura del repositorio
+
+```
+elt_cr/
+├── dags/
+│   └── clash_royale_pipeline_dag.py   # DAG principal de Airflow
+├── scripts/
+│   ├── api_wrapper.py                 # Cliente tipado para la API de Clash Royale
+│   ├── extract_data.py                # Extracción y carga en MinIO
+│   └── transform_data.py             # Transformación Spark → PostgreSQL
+├── dbt/clash_royale_analytics/
+│   └── models/
+│       ├── stg/                       # Staging: limpieza y tipado
+│       ├── dim/                       # Dimensiones del star schema
+│       ├── fct/                       # Tablas de hechos
+│       ├── schema.yml                 # Tests y documentación dbt
+│       └── sources.yml                # Definición de fuentes (landing_*)
+├── analysis/
+│   └── sample_queries.sql            # Queries de ejemplo sobre el warehouse
+├── config/
+│   └── airflow.cfg                   # Solo los overrides de configuración
+├── .github/workflows/
+│   └── ci.yml                        # Pipeline de CI (lint + dbt compile + tests)
+├── docker-compose.yaml
+├── Dockerfile
+├── requirements.txt
+└── .env.example                      # Plantilla de configuración
+```

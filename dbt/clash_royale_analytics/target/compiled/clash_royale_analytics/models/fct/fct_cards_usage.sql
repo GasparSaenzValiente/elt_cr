@@ -29,7 +29,6 @@ unioned_usage as (
 )
 
 select distinct on (battle_id, player_tag, card_id)
-    -- 🗝️ Surrogate Key OBLIGATORIA (3 columnas para unicidad)
     md5(cast(coalesce(cast(battle_id as TEXT), '_dbt_utils_surrogate_key_null_') || '-' || coalesce(cast(player_tag as TEXT), '_dbt_utils_surrogate_key_null_') || '-' || coalesce(cast(card_id as TEXT), '_dbt_utils_surrogate_key_null_') as TEXT)) as usage_key,
     
     battle_id,
